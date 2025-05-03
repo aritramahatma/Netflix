@@ -7,7 +7,12 @@ import MovieGrid from '@/components/MovieGrid';
 import GenreSelector from '@/components/GenreSelector';
 import BackToTop from '@/components/BackToTop';
 import InfiniteScroll from '@/components/InfiniteScroll';
-import { fetchTrendingMovies, addToWatchHistory } from '@/lib/api';
+import { 
+  fetchTrendingMovies, 
+  fetchPopularMovies,
+  fetchAllMovies,
+  addToWatchHistory 
+} from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
 
@@ -68,40 +73,96 @@ const Home = () => {
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />
         ) : null}
         
-        {/* Movie Sections */}
+        {/* Recent Trending Movies (1-3 weeks) */}
+        {(section === null || section === 'recent-trending') && (
+          <MovieGrid 
+            title="New Releases (Trending Last 3 Weeks)" 
+            viewAllLink="/?section=recent-trending" 
+            type="trending" 
+            filterParams={{ recentOnly: true }}
+          />
+        )}
+        
+        {/* All Trending Movies */}
         {(section === null || section === 'trending') && (
           <MovieGrid 
             title="Trending Now" 
             viewAllLink="/?section=trending" 
-            type="trending" 
+            type="trending"
           />
         )}
         
+        {/* Genre Selector */}
         {(section === null || section === 'genres') && (
           <GenreSelector />
         )}
         
+        {/* High-rated Popular Movies (>7.5) */}
+        {(section === null || section === 'top-rated') && (
+          <MovieGrid 
+            title="Popular Movies (Rating 7.5+)" 
+            viewAllLink="/?section=top-rated" 
+            type="popular" 
+            filterParams={{ minRating: 7.5 }}
+          />
+        )}
+        
+        {/* All Popular Movies */}
         {(section === null || section === 'popular') && (
           <MovieGrid 
             title="Popular Movies" 
             viewAllLink="/?section=popular" 
-            type="popular" 
+            type="popular"
+          />
+        )}
+        
+        {/* Other Movies Section */}
+        {(section === null || section === 'others') && (
+          <MovieGrid 
+            title="Other Movies" 
+            viewAllLink="/?section=others" 
+            type="discover"
+          />
+        )}
+        
+        {/* Infinite Scroll for Sections */}
+        {section === 'recent-trending' && (
+          <InfiniteScroll 
+            queryKey={['/api/movies/trending', true]}
+            fetchFn={(page) => fetchTrendingMovies(true, page)}
+            title="All New Releases (Last 3 Weeks)"
           />
         )}
         
         {section === 'trending' && (
           <InfiniteScroll 
-            queryKey={['/api/movies/trending']}
-            fetchFn={(page) => fetch(`/api/movies/trending?page=${page}`).then(res => res.json())}
+            queryKey={['/api/movies/trending', false]}
+            fetchFn={(page) => fetchTrendingMovies(false, page)}
             title="All Trending Movies"
+          />
+        )}
+        
+        {section === 'top-rated' && (
+          <InfiniteScroll 
+            queryKey={['/api/movies/popular', 7.5]}
+            fetchFn={(page) => fetchPopularMovies(7.5, page)}
+            title="All Popular Movies (Rating 7.5+)"
           />
         )}
         
         {section === 'popular' && (
           <InfiniteScroll 
-            queryKey={['/api/movies/popular']}
-            fetchFn={(page) => fetch(`/api/movies/popular?page=${page}`).then(res => res.json())}
+            queryKey={['/api/movies/popular', 0]}
+            fetchFn={(page) => fetchPopularMovies(0, page)}
             title="All Popular Movies"
+          />
+        )}
+        
+        {section === 'others' && (
+          <InfiniteScroll 
+            queryKey={['/api/movies/discover']}
+            fetchFn={(page) => fetchAllMovies(page)}
+            title="Other Movies"
           />
         )}
       </main>

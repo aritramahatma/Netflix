@@ -1,34 +1,70 @@
 import MovieCard from './MovieCard';
 import { useQuery } from '@tanstack/react-query';
-import { fetchTrendingMovies, fetchPopularMovies, fetchMoviesByGenre, addToWatchHistory } from '@/lib/api';
+import { 
+  fetchTrendingMovies, 
+  fetchPopularMovies, 
+  fetchMoviesByGenre, 
+  fetchAllMovies,
+  addToWatchHistory 
+} from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
+
+interface FilterParams {
+  recentOnly?: boolean;
+  minRating?: number;
+}
 
 interface MovieGridProps {
   title: string;
   viewAllLink?: string;
-  type: 'trending' | 'popular' | 'genre';
+  type: 'trending' | 'popular' | 'genre' | 'discover';
   genreId?: string;
+  filterParams?: FilterParams;
 }
 
-const MovieGrid = ({ title, viewAllLink, type, genreId }: MovieGridProps) => {
+const MovieGrid = ({ 
+  title, 
+  viewAllLink, 
+  type, 
+  genreId, 
+  filterParams = {} 
+}: MovieGridProps) => {
   const { toast } = useToast();
+  const { recentOnly, minRating } = filterParams;
 
-  const queryKey = type === 'trending' 
-    ? ['/api/movies/trending'] 
-    : type === 'popular' 
-      ? ['/api/movies/popular'] 
-      : ['/api/movies/genre', genreId];
+  // Create query key based on type and filters
+  let queryKey: any[] = [];
+  
+  if (type === 'trending') {
+    queryKey = ['/api/movies/trending', recentOnly];
+  } else if (type === 'popular') {
+    queryKey = ['/api/movies/popular', minRating];
+  } else if (type === 'genre') {
+    queryKey = ['/api/movies/genre', genreId];
+  } else {
+    queryKey = ['/api/movies/discover'];
+  }
 
-  const fetchFn = type === 'trending' 
-    ? fetchTrendingMovies 
-    : type === 'popular' 
-      ? fetchPopularMovies 
-      : () => fetchMoviesByGenre(genreId!);
+  // Create fetch function based on type and filters
+  const getFetchFn = () => {
+    if (type === 'trending') {
+      return () => fetchTrendingMovies(recentOnly);
+    } else if (type === 'popular') {
+      return () => fetchPopularMovies(minRating);
+    } else if (type === 'genre') {
+      return () => fetchMoviesByGenre(genreId!);
+    } else {
+      return fetchAllMovies;
+    }
+  };
 
-  const { data: movies, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey,
-    queryFn: fetchFn,
+    queryFn: getFetchFn(),
   });
+  
+  // Extract movies array from data
+  const movies = data?.results || [];
 
   const handleWatchClick = async (movieId: number) => {
     try {

@@ -31,14 +31,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get trending movies
+  // Get trending movies (with filter for recently released)
   app.get(`${apiPrefix}/movies/trending`, async (req, res) => {
     try {
       const page = req.query.page ? parseInt(req.query.page as string) : 1;
+      const recentOnly = req.query.recentOnly === 'true';
+      
+      // Get trending movies
       const response = await fetch(
         `${TMDB_BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}&page=${page}`
       );
+      
+      if (!response.ok) {
+        return res.status(response.status).json({ message: "Failed to fetch trending movies" });
+      }
+      
       const data = await response.json();
+      
+      // If recentOnly is true, filter movies released in the last 3 weeks
+      if (recentOnly && data.results) {
+        const threeWeeksAgo = new Date();
+        threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21); // 3 weeks ago
+        
+        data.results = data.results.filter((movie: any) => {
+          if (!movie.release_date) return false;
+          const releaseDate = new Date(movie.release_date);
+          return releaseDate >= threeWeeksAgo;
+        });
+      }
+      
       res.json(data);
     } catch (error) {
       console.error("Error fetching trending movies:", error);
@@ -46,18 +67,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get popular movies
+  // Get popular movies (with optional min rating filter)
   app.get(`${apiPrefix}/movies/popular`, async (req, res) => {
     try {
       const page = req.query.page ? parseInt(req.query.page as string) : 1;
+      const minRating = req.query.minRating ? parseFloat(req.query.minRating as string) : 0;
+      
       const response = await fetch(
         `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&page=${page}`
       );
+      
+      if (!response.ok) {
+        return res.status(response.status).json({ message: "Failed to fetch popular movies" });
+      }
+      
       const data = await response.json();
+      
+      // Filter by minimum rating if specified
+      if (minRating > 0 && data.results) {
+        data.results = data.results.filter((movie: any) => 
+          movie.vote_average && movie.vote_average >= minRating
+        );
+      }
+      
       res.json(data);
     } catch (error) {
       console.error("Error fetching popular movies:", error);
       res.status(500).json({ message: "Failed to fetch popular movies" });
+    }
+  });
+  
+  // Discover movies (for "Others" section)
+  app.get(`${apiPrefix}/movies/discover`, async (req, res) => {
+    try {
+      const page = req.query.page ? parseInt(req.query.page as string) : 1;
+      
+      const response = await fetch(
+        `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&page=${page}&sort_by=popularity.desc`
+      );
+      
+      if (!response.ok) {
+        return res.status(response.status).json({ message: "Failed to discover movies" });
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("Error discovering movies:", error);
+      res.status(500).json({ message: "Failed to discover movies" });
     }
   });
 
