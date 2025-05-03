@@ -114,27 +114,32 @@ const MoviePage = () => {
                   className="rounded-lg shadow-lg max-w-full md:max-w-xs mx-auto"
                 />
               </div>
-              <div className="md:w-2/3 lg:w-3/4 md:pl-8">
-                <h1 className="text-white text-3xl md:text-4xl font-bold mb-2">{movie.title}</h1>
-                <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <span className="text-gray-300">{getYearFromDate(movie.release_date)}</span>
-                  {movie.runtime && <span className="text-gray-300">• {formatRuntime(movie.runtime)}</span>}
-                  <span className="bg-netflix-red text-white px-2 py-0.5 text-xs rounded">
+              <div className="md:w-2/3 lg:w-3/4 md:pl-8 bg-black bg-opacity-50 rounded-lg p-6">
+                <h1 className="text-white text-3xl md:text-4xl font-bold mb-3">{movie.title}</h1>
+                <div className="flex flex-wrap items-center mb-5">
+                  <span className="text-gray-300 text-sm md:text-base mr-3">{getYearFromDate(movie.release_date)}</span>
+                  {movie.runtime && (
+                    <>
+                      <span className="text-gray-300 mx-2">•</span>
+                      <span className="text-gray-300 text-sm md:text-base mr-3">{formatRuntime(movie.runtime)}</span>
+                    </>
+                  )}
+                  <span className="bg-netflix-red text-white px-2 py-1 text-xs rounded mr-3">
                     {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
                   </span>
                 </div>
                 
-                <div className="mb-6">
-                  <h3 className="text-white text-xl font-semibold mb-2">Overview</h3>
-                  <p className="text-gray-300">{movie.overview}</p>
+                <div className="mb-8">
+                  <h3 className="text-white text-xl font-semibold mb-3">Overview</h3>
+                  <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
                 </div>
                 
                 {movie.genres && movie.genres.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-white text-xl font-semibold mb-2">Genres</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {movie.genres.map(genre => (
-                        <span key={genre.id} className="bg-netflix-gray text-white px-3 py-1 rounded-full text-sm">
+                  <div className="mb-8">
+                    <h3 className="text-white text-xl font-semibold mb-3">Genres</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {movie.genres.map((genre: {id: number, name: string}) => (
+                        <span key={genre.id} className="bg-netflix-gray text-white px-4 py-1 rounded-full text-sm">
                           {genre.name}
                         </span>
                       ))}
@@ -158,7 +163,7 @@ const MoviePage = () => {
               <div className="mb-10">
                 <h3 className="text-white text-2xl font-bold mb-4">Cast</h3>
                 <div className="cast-scroll flex gap-4 pb-4">
-                  {credits.cast.slice(0, 10).map(person => (
+                  {credits.cast.slice(0, 10).map((person: {id: number, name: string, profile_path: string | null, character: string}) => (
                     <div key={person.id} className="flex-shrink-0 w-32">
                       <img 
                         src={getProfileUrl(person.profile_path)} 
@@ -178,7 +183,7 @@ const MoviePage = () => {
               <div>
                 <h3 className="text-white text-2xl font-bold mb-4">Similar Movies</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {similarMovies.results.slice(0, 10).map(movie => (
+                  {similarMovies.results.slice(0, 10).map((movie: {id: number, title: string, poster_path: string | null, vote_average: number}) => (
                     <MovieCard 
                       key={movie.id} 
                       movie={movie} 
