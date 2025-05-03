@@ -88,126 +88,129 @@ const MoviePage = () => {
       <Header />
       <MobileMenu />
       
-      <main className="container mx-auto px-4 pt-24 pb-16">
+      <main className="pt-16 pb-16">
         {isLoading ? (
           <div className="flex justify-center items-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
             <div className="w-12 h-12 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : movie ? (
           <div>
-            {/* Movie Hero Section */}
-            <div className="relative mb-16">
-              {/* Movie Backdrop */}
-              <div className="h-[400px] md:h-[500px] rounded-lg overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-netflix-black via-netflix-black/70 to-transparent z-10"></div>
+            {/* Movie Backdrop - SECTION 1 (Only backdrop image) */}
+            <div className="w-full h-[350px] mb-0 relative">
+              {/* Full-width backdrop */}
+              <div className="absolute inset-0">
                 <img 
                   src={getBackdropUrl(movie.backdrop_path, 'w1280')} 
-                  alt={movie.title} 
+                  alt={movie.title}
                   className="w-full h-full object-cover"
                 />
+                {/* Dark gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-netflix-black"></div>
               </div>
-              
-              {/* Movie Info Container */}
-              <div className="relative z-20 -mt-36 container mx-auto">
-                <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-8">
-                  {/* Movie Poster */}
-                  <div className="md:w-1/4 lg:w-1/5 flex-shrink-0">
-                    <img 
-                      src={getPosterUrl(movie.poster_path, 'w500')} 
-                      alt={movie.title} 
-                      className="rounded-lg shadow-xl border-2 border-gray-800 w-full"
-                    />
+            </div>
+
+            {/* Content SECTION 2 (Poster + Details, completely separated from backdrop) */}
+            <div className="container mx-auto px-4 mt-8">
+              <div className="flex flex-col md:flex-row gap-8">
+                {/* Movie Poster - Left Column */}
+                <div className="md:w-1/3 lg:w-1/4">
+                  <img 
+                    src={getPosterUrl(movie.poster_path, 'w500')} 
+                    alt={movie.title} 
+                    className="rounded-lg shadow-xl w-full"
+                  />
+                </div>
+
+                {/* Movie Details - Right Column */}
+                <div className="md:w-2/3 lg:w-3/4">
+                  <h1 className="text-white text-3xl md:text-4xl font-bold mb-4">{movie.title}</h1>
+                  
+                  <div className="flex flex-wrap items-center mb-6">
+                    <span className="text-gray-300 text-sm md:text-base mr-4">{getYearFromDate(movie.release_date)}</span>
+                    {movie.runtime && (
+                      <>
+                        <span className="text-gray-400 mx-2">•</span>
+                        <span className="text-gray-300 text-sm md:text-base mr-4">{formatRuntime(movie.runtime)}</span>
+                      </>
+                    )}
+                    <span className="bg-netflix-red text-white px-2 py-1 text-xs rounded">
+                      {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
+                    </span>
                   </div>
                   
-                  {/* Movie Details */}
-                  <div className="md:w-3/4 lg:w-4/5 bg-black bg-opacity-80 p-6 rounded-lg shadow-lg">
-                    <h1 className="text-white text-3xl md:text-4xl font-bold mb-4">{movie.title}</h1>
-                    
-                    <div className="flex flex-wrap items-center mb-5">
-                      <span className="text-gray-300 text-sm md:text-base mr-4">{getYearFromDate(movie.release_date)}</span>
-                      {movie.runtime && (
-                        <>
-                          <span className="text-gray-400 mx-2">•</span>
-                          <span className="text-gray-300 text-sm md:text-base mr-4">{formatRuntime(movie.runtime)}</span>
-                        </>
-                      )}
-                      <span className="bg-netflix-red text-white px-2 py-1 text-xs rounded mr-4">
-                        {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
-                      </span>
-                    </div>
-                    
-                    {/* Overview */}
+                  {/* Overview */}
+                  <div className="mb-6">
+                    <h3 className="text-white text-xl font-semibold mb-3">Overview</h3>
+                    <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
+                  </div>
+                  
+                  {/* Genres */}
+                  {movie.genres && movie.genres.length > 0 && (
                     <div className="mb-6">
-                      <h3 className="text-white text-xl font-semibold mb-2">Overview</h3>
-                      <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
-                    </div>
-                    
-                    {/* Genres */}
-                    {movie.genres && movie.genres.length > 0 && (
-                      <div className="mb-6">
-                        <h3 className="text-white text-xl font-semibold mb-2">Genres</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {movie.genres.map((genre: {id: number, name: string}) => (
-                            <span 
-                              key={genre.id} 
-                              className="bg-netflix-gray text-white px-3 py-1 rounded-full text-sm"
-                            >
-                              {genre.name}
-                            </span>
-                          ))}
-                        </div>
+                      <h3 className="text-white text-xl font-semibold mb-3">Genres</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {movie.genres.map((genre: {id: number, name: string}) => (
+                          <span 
+                            key={genre.id} 
+                            className="bg-netflix-gray text-white px-3 py-1 rounded-full text-sm"
+                          >
+                            {genre.name}
+                          </span>
+                        ))}
                       </div>
-                    )}
-                    
-                    {/* Watch Button */}
-                    <div className="flex gap-3">
-                      <button 
-                        className="bg-netflix-red hover:bg-opacity-80 text-white py-2 px-5 rounded flex items-center transition"
-                        onClick={() => handleWatchClick(parseInt(id))}
-                      >
-                        <i className="fas fa-play mr-2"></i> Watch on Telegram
-                      </button>
                     </div>
+                  )}
+                  
+                  {/* Watch Button */}
+                  <div className="mb-8">
+                    <button 
+                      className="bg-netflix-red hover:bg-opacity-80 text-white py-3 px-6 rounded flex items-center transition"
+                      onClick={() => handleWatchClick(parseInt(id))}
+                    >
+                      <i className="fas fa-play mr-2"></i> Watch on Telegram
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
             
-            {/* Cast Section */}
-            {credits && credits.cast && credits.cast.length > 0 && (
-              <div className="mb-10">
-                <h3 className="text-white text-2xl font-bold mb-4">Cast</h3>
-                <div className="cast-scroll flex gap-4 pb-4 overflow-x-auto">
-                  {credits.cast.slice(0, 10).map((person: {id: number, name: string, profile_path: string | null, character: string}) => (
-                    <div key={person.id} className="flex-shrink-0 w-32">
-                      <img 
-                        src={getProfileUrl(person.profile_path)} 
-                        alt={`${person.name}`} 
-                        className="w-full h-auto rounded-lg mb-2"
+            {/* Cast Section - SECTION 3 */}
+            <div className="container mx-auto px-4 mt-12">
+              {credits && credits.cast && credits.cast.length > 0 && (
+                <div className="mb-12">
+                  <h3 className="text-white text-2xl font-bold mb-4">Cast</h3>
+                  <div className="cast-scroll flex gap-4 pb-4 overflow-x-auto">
+                    {credits.cast.slice(0, 10).map((person: {id: number, name: string, profile_path: string | null, character: string}) => (
+                      <div key={person.id} className="flex-shrink-0 w-32">
+                        <img 
+                          src={getProfileUrl(person.profile_path)} 
+                          alt={`${person.name}`} 
+                          className="w-full h-auto rounded-lg mb-2"
+                        />
+                        <h4 className="text-white text-sm font-medium">{person.name}</h4>
+                        <p className="text-gray-400 text-xs">{person.character}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Similar Movies Section - SECTION 4 */}
+              {similarMovies && similarMovies.results && similarMovies.results.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-white text-2xl font-bold mb-4">Similar Movies</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {similarMovies.results.slice(0, 10).map((movie: {id: number, title: string, poster_path: string | null, vote_average: number}) => (
+                      <MovieCard 
+                        key={movie.id} 
+                        movie={movie} 
+                        onWatchClick={handleWatchClick}
                       />
-                      <h4 className="text-white text-sm font-medium">{person.name}</h4>
-                      <p className="text-gray-400 text-xs">{person.character}</p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            
-            {/* Similar Movies Section */}
-            {similarMovies && similarMovies.results && similarMovies.results.length > 0 && (
-              <div>
-                <h3 className="text-white text-2xl font-bold mb-4">Similar Movies</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {similarMovies.results.slice(0, 10).map((movie: {id: number, title: string, poster_path: string | null, vote_average: number}) => (
-                    <MovieCard 
-                      key={movie.id} 
-                      movie={movie} 
-                      onWatchClick={handleWatchClick}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         ) : null}
       </main>
