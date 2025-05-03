@@ -11,6 +11,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API routes for movies
   const apiPrefix = "/api";
 
+  // Search movies
+  app.get(`${apiPrefix}/movies/search`, async (req, res) => {
+    try {
+      const { query } = req.query;
+      if (!query || typeof query !== 'string') {
+        return res.status(400).json({ message: "Query parameter is required" });
+      }
+      
+      const response = await fetch(
+        `${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
+      );
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("Error searching movies:", error);
+      res.status(500).json({ message: "Failed to search movies" });
+    }
+  });
+
   // Get trending movies
   app.get(`${apiPrefix}/movies/trending`, async (req, res) => {
     try {
@@ -104,26 +124,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Search movies
-  app.get(`${apiPrefix}/movies/search`, async (req, res) => {
-    try {
-      const { query } = req.query;
-      if (!query || typeof query !== 'string') {
-        return res.status(400).json({ message: "Query parameter is required" });
-      }
-      
-      const response = await fetch(
-        `${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
-      );
-      
-      const data = await response.json();
-      res.json(data);
-    } catch (error) {
-      console.error("Error searching movies:", error);
-      res.status(500).json({ message: "Failed to search movies" });
-    }
-  });
-
   // Get movies by genre
   app.get(`${apiPrefix}/movies/genre/:id`, async (req, res) => {
     try {
@@ -179,43 +179,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Movie not found" });
       }
       
-      const movieData = await movieResponse.json();
+      const movieData = await movieResponse.json() as any;
       
-      // Store movie in database if it doesn't exist
-      const existingMovie = await storage.getMovieById(movieId);
-      
-      if (!existingMovie) {
-        await storage.addMovie({
-          id: movieId,
-          title: movieData.title,
-          overview: movieData.overview,
-          posterPath: movieData.poster_path,
-          backdropPath: movieData.backdrop_path,
-          releaseDate: movieData.release_date,
-          voteAverage: movieData.vote_average.toString(),
-          runtime: movieData.runtime,
-          tmdbId: movieId,
-        });
+      try {
+        // Store movie in database if it doesn't exist
+        const existingMovie = await storage.getMovieById(movieId);
         
-        // Add genres if they don't exist
-        if (movieData.genres && movieData.genres.length > 0) {
-          for (const genre of movieData.genres) {
-            const existingGenre = await storage.getGenreById(genre.id);
-            
-            if (!existingGenre) {
-              await storage.addGenre({
-                id: genre.id,
-                name: genre.name,
-              });
+        if (!existingMovie) {
+          await storage.addMovie({
+            id: movieId,
+            title: movieData.title,
+            overview: movieData.overview,
+            posterPath: movieData.poster_path,
+            backdropPath: movieData.backdrop_path,
+            releaseDate: movieData.release_date,
+            voteAverage: typeof movieData.vote_average === 'number' ? movieData.vote_average.toString() : null,
+            runtime: typeof movieData.runtime === 'number' ? movieData.runtime : null,
+            tmdbId: movieId,
+            createdAt: new Date(),
+          });
+          
+          // Add genres if they don't exist
+          if (movieData.genres && Array.isArray(movieData.genres) && movieData.genres.length > 0) {
+            for (const genre of movieData.genres) {
+              try {
+                const existingGenre = await storage.getGenreById(genre.id);
+                
+                if (!existingGenre) {
+                  await storage.addGenre({
+                    id: genre.id,
+                    name: genre.name,
+                  });
+                }
+                
+                // Link movie to genre
+                await storage.addMovieGenre({
+                  movieId,
+                  genreId: genre.id,
+                });
+              } catch (genreError) {
+                console.error(`Error with genre ${genre.id}:`, genreError);
+                // Continue with other genres
+              }
             }
-            
-            // Link movie to genre
-            await storage.addMovieGenre({
-              movieId,
-              genreId: genre.id,
-            });
           }
         }
+      } catch (movieError) {
+        console.error("Error adding movie:", movieError);
+        // Proceed with watch history regardless of movie error
+        // The movie might already exist due to a race condition
       }
       
       // Add to watch history
