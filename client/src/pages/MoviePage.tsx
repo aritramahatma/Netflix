@@ -48,42 +48,6 @@ const MoviePage = () => {
       // Open Telegram bot in new tab
       window.open(`https://t.me/movies404update?start=${movieId}`, '_blank');
       
-      // Prompt user to enter their Telegram ID
-      const promptTelegramId = () => {
-        const chatId = prompt("Please enter your Telegram Chat ID to stream this movie:");
-        
-        if (chatId) {
-          // Call API to request movie stream via Telegram bot
-          fetch('/api/telegram/stream', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ movieId, chatId })
-          })
-          .then(response => {
-            if (!response.ok) throw new Error('Stream request failed');
-            return response.json();
-          })
-          .then(data => {
-            toast({
-              title: "Stream request sent",
-              description: "Check your Telegram for streaming options",
-            });
-          })
-          .catch(err => {
-            toast({
-              title: "Error",
-              description: "Failed to send stream request. Please try again.",
-              variant: "destructive",
-            });
-          });
-        }
-      };
-      
-      // Ask about Telegram ID after a short delay to allow Telegram tab to open
-      setTimeout(promptTelegramId, 1000);
-            
       toast({
         title: "Movie added to watch history",
         description: "Opening Telegram bot to watch the movie.",
