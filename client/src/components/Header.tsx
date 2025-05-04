@@ -122,7 +122,7 @@ const Header = () => {
             Genres
           </a>
           <a 
-            href="https://t.me/your_movie_bot"
+            href="https://t.me/movies404update"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-netflix-red transition"

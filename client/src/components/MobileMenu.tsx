@@ -107,7 +107,7 @@ const MobileMenu = () => {
             Genres
           </a>
           <a 
-            href="https://t.me/your_movie_bot"
+            href="https://t.me/movies404update"
             target="_blank"
             rel="noopener noreferrer"
             className="block text-white hover:text-netflix-red transition-colors"
