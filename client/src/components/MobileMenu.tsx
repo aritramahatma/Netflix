@@ -7,7 +7,7 @@ const MobileMenu = () => {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: genres } = useQuery({
+  const { data: genres = [] } = useQuery({
     queryKey: ['/api/genres'],
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
@@ -71,9 +71,28 @@ const MobileMenu = () => {
           <Link href="/?section=trending" className="block text-white hover:text-netflix-red transition-colors">
             Trending
           </Link>
-          <Link href="/?section=genres" className="block text-white hover:text-netflix-red transition-colors">
-            Genres
+          <Link href="/?section=popular" className="block text-white hover:text-netflix-red transition-colors">
+            Popular
           </Link>
+          <a
+            href="#"
+            className="block text-white hover:text-netflix-red transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              closeMenu();
+              const genresSection = document.getElementById('genres-section');
+              if (genresSection) {
+                window.scrollTo({
+                  top: genresSection.offsetTop - 100,
+                  behavior: 'smooth'
+                });
+              } else {
+                window.location.href = '/?section=genres';
+              }
+            }}
+          >
+            Genres
+          </a>
           <hr className="border-netflix-gray my-4" />
           <div className="space-y-3">
             <p className="text-gray-400 uppercase text-sm font-medium">Genres</p>

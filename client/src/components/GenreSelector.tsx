@@ -2,6 +2,11 @@ import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { fetchGenres } from '@/lib/api';
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
 // Map of genre IDs to Font Awesome icons
 const genreIcons: Record<string, string> = {
   '28': 'fa-film', // Action
@@ -24,7 +29,7 @@ const genreIcons: Record<string, string> = {
 };
 
 const GenreSelector = () => {
-  const { data: genres, isLoading } = useQuery({
+  const { data: genres = [] as Genre[], isLoading } = useQuery<Genre[]>({
     queryKey: ['/api/genres'],
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
@@ -41,7 +46,7 @@ const GenreSelector = () => {
   }
 
   return (
-    <section className="mb-10">
+    <section id="genres-section" className="mb-10 pt-5">
       <h2 className="text-white text-2xl font-bold mb-4">Browse by Genre</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {genres?.map(genre => (

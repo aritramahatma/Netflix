@@ -89,7 +89,25 @@ const Header = () => {
         <div className="hidden md:flex items-center space-x-6">
           <Link href="/" className="text-white hover:text-netflix-red transition">Home</Link>
           <Link href="/?section=trending" className="text-white hover:text-netflix-red transition">Trending</Link>
-          <Link href="/?section=genres" className="text-white hover:text-netflix-red transition">Genres</Link>
+          <Link href="/?section=popular" className="text-white hover:text-netflix-red transition">Popular</Link>
+          <a 
+            href="#genres" 
+            className="text-white hover:text-netflix-red transition"
+            onClick={(e) => {
+              e.preventDefault();
+              const genresSection = document.getElementById('genres-section');
+              if (genresSection) {
+                window.scrollTo({
+                  top: genresSection.offsetTop - 100,
+                  behavior: 'smooth'
+                });
+              } else {
+                window.location.href = '/?section=genres';
+              }
+            }}
+          >
+            Genres
+          </a>
         </div>
 
         {/* Search Bar (Desktop) */}
