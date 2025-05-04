@@ -75,16 +75,6 @@ const Home = () => {
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />
         ) : null}
         
-        {/* Recent Trending Movies (1-3 weeks) */}
-        {(section === null || section === 'recent-trending') && (
-          <MovieGrid 
-            title="New Releases (Trending Last 3 Weeks)" 
-            viewAllLink="/?section=recent-trending" 
-            type="trending" 
-            filterParams={{ recentOnly: true }}
-          />
-        )}
-        
         {/* All Trending Movies */}
         {(section === null || section === 'trending') && (
           <MovieGrid 
@@ -97,16 +87,6 @@ const Home = () => {
         {/* Genre Selector */}
         {(section === null || section === 'genres') && (
           <GenreSelector />
-        )}
-        
-        {/* High-rated Popular Movies (>7.5) */}
-        {(section === null || section === 'top-rated') && (
-          <MovieGrid 
-            title="Popular Movies (Rating 7.5+)" 
-            viewAllLink="/?section=top-rated" 
-            type="popular" 
-            filterParams={{ minRating: 7.5 }}
-          />
         )}
         
         {/* All Popular Movies */}
@@ -128,27 +108,11 @@ const Home = () => {
         )}
         
         {/* Infinite Scroll for Sections */}
-        {section === 'recent-trending' && (
-          <InfiniteScroll 
-            queryKey={['/api/movies/trending', true]}
-            fetchFn={(page) => fetchTrendingMovies(true, page)}
-            title="All New Releases (Last 3 Weeks)"
-          />
-        )}
-        
         {section === 'trending' && (
           <InfiniteScroll 
             queryKey={['/api/movies/trending', false]}
             fetchFn={(page) => fetchTrendingMovies(false, page)}
             title="All Trending Movies"
-          />
-        )}
-        
-        {section === 'top-rated' && (
-          <InfiniteScroll 
-            queryKey={['/api/movies/popular', 7.5]}
-            fetchFn={(page) => fetchPopularMovies(7.5, page)}
-            title="All Popular Movies (Rating 7.5+)"
           />
         )}
         
