@@ -45,26 +45,32 @@ const MovieGrid = ({
     queryKey = ['/api/movies/discover'];
   }
 
-  // Create fetch function based on type and filters
-  const getFetchFn = () => {
-    if (type === 'trending') {
-      return () => fetchTrendingMovies(recentOnly);
-    } else if (type === 'popular') {
-      return () => fetchPopularMovies(minRating);
-    } else if (type === 'genre') {
-      return () => fetchMoviesByGenre(genreId!);
-    } else {
-      return fetchAllMovies;
+  // Fetching data with proper query handling
+  const fetchData = async () => {
+    try {
+      if (type === 'trending') {
+        return await fetchTrendingMovies(recentOnly);
+      } else if (type === 'popular') {
+        return await fetchPopularMovies(minRating);
+      } else if (type === 'genre') {
+        return await fetchMoviesByGenre(genreId!);
+      } else if (type === 'discover') {
+        return await fetchAllMovies();
+      }
+      return { results: [] };
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      throw error;
     }
   };
 
-  const { data, isLoading, error } = useQuery({
+  const { data: movieData, isLoading, error } = useQuery({
     queryKey,
-    queryFn: getFetchFn(),
+    queryFn: fetchData
   });
   
-  // Extract movies array from data
-  const movies = data?.results || [];
+  // Extract movies array from data safely
+  const movies = movieData?.results || [];
 
   const handleWatchClick = async (movieId: number) => {
     try {
@@ -113,7 +119,7 @@ const MovieGrid = ({
       
       {movies && movies.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.map(movie => (
+          {movies.map((movie: any) => (
             <MovieCard 
               key={movie.id} 
               movie={movie} 

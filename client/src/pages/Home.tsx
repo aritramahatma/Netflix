@@ -28,10 +28,12 @@ const Home = () => {
   }, [location]);
 
   // Fetch trending movies for hero section
-  const { data: trendingMovies, isLoading } = useQuery({
+  const { data: trendingMoviesData, isLoading } = useQuery({
     queryKey: ['/api/movies/trending'],
-    queryFn: fetchTrendingMovies,
+    queryFn: () => fetchTrendingMovies(),
   });
+  
+  const trendingMovies = trendingMoviesData as any;
 
   const handleWatchClick = async (movieId: number) => {
     try {

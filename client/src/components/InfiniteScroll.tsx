@@ -25,21 +25,34 @@ const InfiniteScroll = ({ queryKey, fetchFn, title }: InfiniteScrollProps) => {
   const loaderRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  // Create a function to fetch data that properly works with React Query
+  const fetchData = async () => {
+    try {
+      return await fetchFn(page);
+    } catch (error) {
+      console.error("Error fetching data in InfiniteScroll:", error);
+      throw error;
+    }
+  };
+
   // Fetch initial data
   const { data, isLoading, error } = useQuery({
     queryKey: [...queryKey, page],
-    queryFn: () => fetchFn(page),
+    queryFn: fetchData,
   });
 
   // Update movies when data changes
   useEffect(() => {
     if (data) {
+      const results = data.results || [];
+      const totalPages = data.total_pages || 1;
+      
       if (page === 1) {
-        setAllMovies(data.results);
+        setAllMovies(results);
       } else {
-        setAllMovies(prev => [...prev, ...data.results]);
+        setAllMovies(prev => [...prev, ...results]);
       }
-      setHasMore(page < data.total_pages);
+      setHasMore(page < totalPages);
       setIsLoadingMore(false);
     }
   }, [data, page]);
