@@ -103,8 +103,6 @@ const Header = () => {
           >
             Home
           </a>
-          <Link href="/?section=trending" className="text-white hover:text-netflix-red transition">Trending</Link>
-          <Link href="/?section=popular" className="text-white hover:text-netflix-red transition">Popular</Link>
           <a 
             href="#genres" 
             className="text-white hover:text-netflix-red transition"
@@ -123,6 +121,15 @@ const Header = () => {
           >
             Genres
           </a>
+          <a 
+            href="https://t.me/your_movie_bot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-netflix-red transition"
+          >
+            Telegram
+          </a>
+          <Link href="/pro" className="text-white hover:text-netflix-red transition">Pro</Link>
         </div>
 
         {/* Search Bar (Desktop) */}

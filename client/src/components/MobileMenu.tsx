@@ -87,12 +87,6 @@ const MobileMenu = () => {
           >
             Home
           </a>
-          <Link href="/?section=trending" className="block text-white hover:text-netflix-red transition-colors">
-            Trending
-          </Link>
-          <Link href="/?section=popular" className="block text-white hover:text-netflix-red transition-colors">
-            Popular
-          </Link>
           <a
             href="#"
             className="block text-white hover:text-netflix-red transition-colors"
@@ -112,6 +106,22 @@ const MobileMenu = () => {
           >
             Genres
           </a>
+          <a 
+            href="https://t.me/your_movie_bot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-white hover:text-netflix-red transition-colors"
+            onClick={closeMenu}
+          >
+            Telegram
+          </a>
+          <Link 
+            href="/pro" 
+            className="block text-white hover:text-netflix-red transition-colors"
+            onClick={closeMenu}
+          >
+            Pro
+          </Link>
           <hr className="border-netflix-gray my-4" />
           <div className="space-y-3">
             <p className="text-gray-400 uppercase text-sm font-medium">Genres</p>
