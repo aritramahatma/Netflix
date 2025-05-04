@@ -129,7 +129,7 @@ const Header = () => {
           >
             Telegram
           </a>
-          <Link href="/pro" className="text-white hover:text-netflix-red transition">Pro</Link>
+          <Link href="/premium" className="text-white hover:text-netflix-red transition">Premium</Link>
         </div>
 
         {/* Search Bar (Desktop) */}

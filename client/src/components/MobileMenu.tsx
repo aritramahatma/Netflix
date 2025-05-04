@@ -116,11 +116,11 @@ const MobileMenu = () => {
             Telegram
           </a>
           <Link 
-            href="/pro" 
+            href="/premium" 
             className="block text-white hover:text-netflix-red transition-colors"
             onClick={closeMenu}
           >
-            Pro
+            Premium
           </Link>
           <hr className="border-netflix-gray my-4" />
           <div className="space-y-3">
