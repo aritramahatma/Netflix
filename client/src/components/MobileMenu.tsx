@@ -87,11 +87,21 @@ const MobileMenu = () => {
           >
             Home
           </a>
-          <Link href="/?section=trending" className="block text-white hover:text-netflix-red transition-colors">
-            Trending
-          </Link>
-          <Link href="/?section=popular" className="block text-white hover:text-netflix-red transition-colors">
-            Popular
+          <a 
+            href="https://t.me/your_movie_channel" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block text-white hover:text-netflix-red transition-colors flex items-center"
+            onClick={() => closeMenu()}
+          >
+            <i className="fab fa-telegram mr-2"></i> Telegram
+          </a>
+          <Link 
+            href="/premium" 
+            className="block bg-netflix-red text-white px-3 py-2 rounded-md hover:bg-red-700 transition flex items-center my-2"
+            onClick={() => closeMenu()}
+          >
+            <i className="fas fa-crown mr-2"></i> Premium
           </Link>
           <a
             href="#"
