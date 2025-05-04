@@ -3,11 +3,16 @@ import { Link, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { fetchGenres } from '@/lib/api';
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
 const MobileMenu = () => {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: genres = [] } = useQuery({
+  const { data: genres = [] as Genre[] } = useQuery<Genre[]>({
     queryKey: ['/api/genres'],
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
@@ -65,9 +70,23 @@ const MobileMenu = () => {
           </button>
         </div>
         <nav className="space-y-5">
-          <Link href="/" className="block text-white hover:text-netflix-red transition-colors">
+          <a 
+            href="/" 
+            className="block text-white hover:text-netflix-red transition-colors"
+            onClick={(e) => {
+              // If we're already on the home page, just scroll to top
+              if (location === '/') {
+                e.preventDefault();
+                closeMenu();
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+              }
+            }}
+          >
             Home
-          </Link>
+          </a>
           <Link href="/?section=trending" className="block text-white hover:text-netflix-red transition-colors">
             Trending
           </Link>
@@ -96,7 +115,7 @@ const MobileMenu = () => {
           <hr className="border-netflix-gray my-4" />
           <div className="space-y-3">
             <p className="text-gray-400 uppercase text-sm font-medium">Genres</p>
-            {genres?.map((genre) => (
+            {genres.map((genre: Genre) => (
               <Link 
                 key={genre.id} 
                 href={`/genre/${genre.id}`} 

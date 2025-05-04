@@ -87,7 +87,22 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link href="/" className="text-white hover:text-netflix-red transition">Home</Link>
+          <a 
+            href="/"
+            className="text-white hover:text-netflix-red transition"
+            onClick={(e) => {
+              // If we're already on the home page, just scroll to top
+              if (location === '/') {
+                e.preventDefault();
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+              }
+            }}
+          >
+            Home
+          </a>
           <Link href="/?section=trending" className="text-white hover:text-netflix-red transition">Trending</Link>
           <Link href="/?section=popular" className="text-white hover:text-netflix-red transition">Popular</Link>
           <a 
