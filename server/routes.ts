@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import fetch from "node-fetch";
+import { handleTelegramWebhook, requestMovieStream } from "./telegram";
 
 // TMDB API configuration
 const TMDB_API_KEY = process.env.TMDB_API_KEY || "7f325eb836c6c510bab73c65fa33d484"; // User provided key
@@ -10,6 +11,26 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes for movies
   const apiPrefix = "/api";
+  
+  // Telegram Bot webhook endpoint
+  app.post(`${apiPrefix}/telegram/webhook`, handleTelegramWebhook);
+  
+  // Stream movie via Telegram bot
+  app.post(`${apiPrefix}/telegram/stream`, async (req, res) => {
+    try {
+      const { movieId, chatId } = req.body;
+      
+      if (!movieId || !chatId) {
+        return res.status(400).json({ message: "Movie ID and chat ID are required" });
+      }
+      
+      const result = await requestMovieStream(Number(movieId), Number(chatId));
+      res.json(result);
+    } catch (error) {
+      console.error('Error requesting movie stream:', error);
+      res.status(500).json({ message: "Failed to request movie stream" });
+    }
+  });
 
   // Search movies
   app.get(`${apiPrefix}/movies/search`, async (req, res) => {

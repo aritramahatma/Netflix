@@ -1,0 +1,222 @@
+ᴀ ʟ ᴇ x, [04-05-2025 19:12]
+We are building a Telegram bot that integrates with a movie streaming website. The bot will be responsible for indexing movie/series metadata from a private Telegram channel, managing user streaming requests, and providing a seamless experience for streaming movies directly within Telegram. Additionally, it will allow users to search for movies/series and stream them on the website using a "Play" button.
+
+1. Auto-Indexing Feature
+Goal:
+Automatically index all movies and series uploaded in the private Telegram channel and store metadata in MongoDB for easy retrieval.
+
+How It Works:
+File Upload Monitoring:
+
+The bot listens for file uploads in the private Telegram channel.
+
+It monitors any new files and automatically extracts metadata from them.
+
+Metadata Extraction:
+
+The bot extracts the following data from each uploaded file:
+
+Title: Movie/Series title (from file name or caption)
+
+Year: Release year (if available in the file name or caption)
+
+Language: Language (if available in the file name or caption)
+
+Pixel Quality: Quality (e.g., 1080p, 720p, 360p)
+
+File ID: Unique Telegram file ID for streaming or downloading
+
+MongoDB Storage:
+
+The bot stores the extracted data in MongoDB in the following format:
+
+json
+Copy code
+{
+  "title": "Movie Title", 
+  "year": 2018, 
+  "language": "Hindi", 
+  "pixel": "1080p", 
+  "file_id": "file_123456789"
+}
+Duplicate Check:
+
+Before indexing, the bot checks if the file already exists in the database (by title, year, language, etc.).
+
+If the file is already indexed, the bot skips re-indexing.
+
+2. Admin /index Command for Old Files
+Goal:
+Allow the admin to trigger the indexing of old files from the channel.
+
+How It Works:
+Admin Trigger: The admin uses the /index command to index all old files from the private Telegram channel.
+
+Command Input:
+/index
+
+Action:
+
+The bot will scan the entire history of the private channel and extract metadata from any files that have not been indexed.
+
+The bot automatically indexes each file and stores the metadata in MongoDB.
+
+Progress Updates:
+
+The bot provides periodic updates during the indexing process.
+
+Example updates:
+
+"Indexing file 1 of 50..."
+
+"Indexing file 10 of 50..."
+
+Completion:
+
+After all files are indexed, the bot sends a confirmation message:
+
+sql
+Copy code
+All old files have been indexed successfully! You can now search or stream any movie/series using the bot.
+3. Frontend Integration (Website)
+Goal:
+Integrate the Telegram bot with the movie streaming website. The website will display movie and series options, and users will be able to click on the "Play" button to request streaming.
+
+How It Works:
+Movie Display:
+
+The website displays a list of movies and series with relevant metadata such as title, year, and quality.
+
+Each movie/series will have a "Play" button.
+
+User Clicks Play:
+
+When a user clicks on the "Play" button for a movie, the website sends a request to the bot (via an API or webhook).
+
+The request includes the movie title and, if applicable, other metadata like quality or language.
+
+4. Bot Handles Play Request
+Goal:
+When the user clicks the "Play" button on the website, the bot should handle the request, search for the movie in the database, and provide the user with a streaming link.
+
+How It Works:
+Bot Receives Movie Request:
+
+The bot receives the movie title (and other details) from the website via an API request.
+
+It searches the MongoDB database for matching movies/series.
+
+Handle Multiple Matches:
+
+If the bot finds multiple matches (e.g., different years or qualities), it presents the user with a list of options.
+
+Example: If a movie named "PK" exists with multiple versions ("PK (2014)", "PK (2018)"), the bot provides buttons with options like:
+
+"PK (2014), 1080p, Hindi"
+
+"PK (2018), 720p, English"
+
+Metadata Confirmation:
+
+Once the user selects a movie version, the bot confirms the movie’s metadata:
+
+Title
+
+Year (if available)
+
+Language
+
+Quality (e.g., 720p, 1080p)
+
+Stream or Download Options:
+
+After metadata confirmation, the bot asks the user if they want to watch or download the movie:
+
+ᴀ ʟ ᴇ x, [04-05-2025 19:12]
+Option 1: Watch Now
+Clicking "Watch Now" opens the stream.
+
+Option 2: Download
+Clicking "Download" provides the download link.
+
+5. Streaming the Movie
+Goal:
+Generate a streaming link for the movie and provide it to the user via the bot.
+
+How It Works:
+Bot Retrieves the File ID:
+
+The bot fetches the file ID from MongoDB for the selected movie.
+
+Generate Streaming URL:
+
+The bot generates a Telegram streaming link using the file ID.
+
+The bot sends this link to the user in the chat.
+
+Stream in Telegram:
+
+The user clicks on the link and the movie begins streaming directly in Telegram.
+
+6. No Download Button on Website
+Goal:
+Ensure that the website only provides a "Play" button and that the download option is handled exclusively by the bot.
+
+How It Works:
+Website:
+
+The "Play" button on the website triggers the bot request for streaming the movie but does not offer any download option on the website.
+
+Bot Handles Download:
+
+The Download option will be available only in the bot.
+
+If the user clicks Download in the bot, the bot generates and provides a download link.
+
+7. MongoDB Data Structure
+Each movie/series should be stored in MongoDB with the following structure:
+
+json
+Copy code
+{
+  "title": "Movie Title", 
+  "year": 2018, 
+  "language": "Hindi", 
+  "pixel": "1080p", 
+  "file_id": "file_123456789"
+}
+Where:
+
+title: The name of the movie/series.
+
+year: The release year (if available).
+
+language: The language (e.g., Hindi, English).
+
+pixel: Video quality (e.g., 1080p, 720p).
+
+file_id: The unique Telegram file ID that is used to stream or download the movie.
+
+8. Final Interaction Flow
+Admin Triggers Indexing: Admin types /index to trigger indexing of old files.
+
+Frontend Displays Movies: The website shows movies/series with "Play" buttons.
+
+User Clicks Play: User clicks the Play button for a movie on the website.
+
+Bot Receives Request: The bot receives the request and searches for the movie in MongoDB.
+
+Metadata Confirmation: The bot confirms the movie’s metadata with the user.
+
+Streaming Link: The bot sends the streaming link for the movie to the user in Telegram.
+
+Download Link (Bot Only): If the user requests to download, the bot provides a download link.
+
+Considerations for Implementation
+Efficiency: Ensure the bot can handle a high number of requests efficiently and manage large video files.
+
+Database Optimization: Regularly clean and optimize the MongoDB database to avoid duplication.
+
+User Experience: Ensure the transition between the website and the Telegram bot is seamless and intuitive.
+
+This detailed prompt outlines the complete workflow for your movie streaming website and bot integration, from indexing to user interactions and streaming. Let me know if you need further details or adjustments!
