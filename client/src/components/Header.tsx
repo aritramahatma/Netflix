@@ -103,20 +103,8 @@ const Header = () => {
           >
             Home
           </a>
-          <a 
-            href="https://t.me/your_movie_channel" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-white hover:text-netflix-red transition flex items-center"
-          >
-            <i className="fab fa-telegram mr-1"></i> Telegram
-          </a>
-          <Link 
-            href="/premium" 
-            className="bg-netflix-red text-white px-4 py-1 rounded-md hover:bg-red-700 transition flex items-center"
-          >
-            <i className="fas fa-crown mr-1"></i> Premium
-          </Link>
+          <Link href="/?section=trending" className="text-white hover:text-netflix-red transition">Trending</Link>
+          <Link href="/?section=popular" className="text-white hover:text-netflix-red transition">Popular</Link>
           <a 
             href="#genres" 
             className="text-white hover:text-netflix-red transition"
