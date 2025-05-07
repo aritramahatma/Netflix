@@ -5,7 +5,7 @@ import {
   fetchPopularMovies, 
   fetchMoviesByGenre, 
   fetchAllMovies,
-  addToWatchHistory 
+  getStreamingUrl
 } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 
@@ -34,7 +34,7 @@ const MovieGrid = ({
 
   // Create query key based on type and filters
   let queryKey: any[] = [];
-  
+
   if (type === 'trending') {
     queryKey = ['/api/movies/trending', recentOnly];
   } else if (type === 'popular') {
@@ -68,25 +68,24 @@ const MovieGrid = ({
     queryKey,
     queryFn: fetchData
   });
-  
+
   // Extract movies array from data safely
   const movies = movieData?.results || [];
 
   const handleWatchClick = async (movieId: number) => {
     try {
-      await addToWatchHistory(movieId);
-      
-      // Open Telegram bot in new tab
-      window.open(`https://t.me/your_movie_bot?start=${movieId}`, '_blank');
-      
-      toast({
-        title: "Movie added to watch history",
-        description: "Opening Telegram bot to watch the movie.",
-      });
+      const streamingUrl = await getStreamingUrl(movieId);
+      if (streamingUrl) {
+        //Open the video in a new tab or use a video player component
+        window.open(streamingUrl, '_blank');
+        toast({ title: "Playing movie...", description: "" });
+      } else {
+        toast({ title: "Error", description: "Streaming URL not found for this movie.", variant: "destructive" });
+      }
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to add movie to watch history.",
+        description: "Failed to get streaming URL.",
         variant: "destructive",
       });
     }
@@ -102,13 +101,13 @@ const MovieGrid = ({
           </a>
         )}
       </div>
-      
+
       {isLoading && (
         <div className="flex justify-center py-10">
           <div className="w-10 h-10 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
-      
+
       {error && (
         <div className="bg-netflix-dark p-8 rounded-lg text-center">
           <i className="fas fa-exclamation-triangle text-netflix-red text-4xl mb-4"></i>
@@ -116,7 +115,7 @@ const MovieGrid = ({
           <p className="text-gray-400 mt-2">Please try again later.</p>
         </div>
       )}
-      
+
       {movies && movies.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {movies.map((movie: any) => (
@@ -128,7 +127,7 @@ const MovieGrid = ({
           ))}
         </div>
       )}
-      
+
       {movies && movies.length === 0 && !isLoading && !error && (
         <div className="bg-netflix-dark p-8 rounded-lg text-center">
           <i className="fas fa-film text-netflix-red text-4xl mb-4"></i>
