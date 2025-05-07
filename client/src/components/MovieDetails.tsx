@@ -74,7 +74,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
   const handleWatchClick = () => {
     if (!movie) return;
     setIsVideoOpen(true);
-
+    
     toast({
       title: "Opening Video Player",
       description: `Watch "${movie.title}" in HD quality`,
@@ -199,10 +199,8 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
               </div>
             )}
             {/* Video Player Modal */}
-            {isVideoOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                <VideoPlayer movie={movie} onClose={() => setIsVideoOpen(false)} />
-              </div>
+            {isVideoOpen && movie && (
+              <VideoPlayer movieId={movie.id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />
             )}
           </div>
         ) : (

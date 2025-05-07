@@ -19,6 +19,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
   const [truncatedOverview, setTruncatedOverview] = useState('');
+  const [isVideoOpen, setIsVideoOpen] = useState(false); // Added state for video player
 
   // Truncate the overview text for mobile devices
   useEffect(() => {
@@ -33,29 +34,28 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
 
     truncateOverview();
     window.addEventListener('resize', truncateOverview);
-    
+
     return () => {
       window.removeEventListener('resize', truncateOverview);
     };
   }, [movie.overview]);
 
   // Format the vote average to one decimal place
-  const rating = typeof movie.vote_average === 'number' 
-    ? movie.vote_average.toFixed(1) 
+  const rating = typeof movie.vote_average === 'number'
+    ? movie.vote_average.toFixed(1)
     : Number(movie.vote_average).toFixed(1);
 
   const handleWatchClick = () => {
-    const streamingUrl = getStreamingUrl(movie.id);
-    window.open(streamingUrl, '_blank');
+    setIsVideoOpen(true); // Open the video player
   };
 
   return (
     <section className="mb-10">
       <div className="relative rounded-lg overflow-hidden" style={{ height: '50vh', minHeight: '400px' }}>
         <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent z-10"></div>
-        <img 
-          src={getBackdropUrl(movie.backdrop_path, 'w1280')} 
-          alt={movie.title} 
+        <img
+          src={getBackdropUrl(movie.backdrop_path, 'w1280')}
+          alt={movie.title}
           className="w-full h-full object-cover"
         />
         <div className="absolute bottom-0 left-0 p-6 z-20 w-full md:w-2/3">
@@ -68,7 +68,7 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
             {truncatedOverview}
           </p>
           <div className="flex space-x-3">
-            <button 
+            <button
               className="bg-netflix-red hover:bg-opacity-80 text-white py-2 px-5 rounded flex items-center transition"
               onClick={handleWatchClick}
             >
@@ -82,8 +82,49 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
           </div>
         </div>
       </div>
+      {isVideoOpen && <VideoPlayer movieId={movie.id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />}
     </section>
   );
 };
+
+const VideoPlayer = ({ movieId, isOpen, onClose }: { movieId: number; isOpen: boolean; onClose: () => void }) => {
+  const [videoUrl, setVideoUrl] = useState('');
+
+  useEffect(() => {
+    // Replace this with your actual video URL retrieval logic
+    const getVideo = async () => {
+      try {
+        const url = await getStreamingUrl(movieId);
+        setVideoUrl(url);
+      } catch (error) {
+        console.error("Error fetching video URL:", error);
+      }
+    };
+    if (isOpen) {
+      getVideo();
+    }
+  }, [movieId, isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-lg p-4">
+        <button className="absolute top-2 right-2" onClick={onClose}>
+          &times;
+        </button>
+        {videoUrl ? (
+          <video width="640" height="360" controls>
+            <source src={videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <p>Loading video...</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 
 export default HeroSection;
