@@ -69,26 +69,16 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
     }, 300);
   };
 
-  const handleWatchClick = async () => {
+  const handleWatchClick = () => {
     if (!movie) return;
     
-    try {
-      await addToWatchHistory(parseInt(movieId));
-      
-      // Open Telegram bot in new tab
-      window.open(`https://t.me/your_movie_bot?start=${movieId}`, '_blank');
-      
-      toast({
-        title: "Opening Telegram Bot",
-        description: `Watch "${movie.title}" on Telegram.`,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to connect to Telegram bot.",
-        variant: "destructive",
-      });
-    }
+    // Open Vidsrc player in new tab
+    window.open(getStreamingUrl(parseInt(movieId)), '_blank');
+    
+    toast({
+      title: "Opening Movie Player",
+      description: `Watch "${movie.title}" now.`,
+    });
   };
 
   if (!isOpen) return null;

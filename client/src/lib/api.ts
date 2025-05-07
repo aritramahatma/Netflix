@@ -57,6 +57,10 @@ export const fetchGenres = async () => {
   return res.json();
 };
 
+export const getStreamingUrl = (movieId: number) => {
+  return `https://vidsrc.to/embed/movie/${movieId}`;
+};
+
 export const addToWatchHistory = async (movieId: number) => {
   return apiRequest('POST', '/api/watch-history', { movieId });
 };

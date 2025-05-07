@@ -41,24 +41,14 @@ const MoviePage = () => {
 
   const isLoading = isLoadingMovie || isLoadingCredits || isLoadingSimilar;
 
-  const handleWatchClick = async (movieId: number) => {
-    try {
-      await addToWatchHistory(movieId);
-      
-      // Open Telegram bot in new tab
-      window.open(`https://t.me/movies404update?start=${movieId}`, '_blank');
-      
-      toast({
-        title: "Movie added to watch history",
-        description: "Opening Telegram bot to watch the movie.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to add movie to watch history.",
-        variant: "destructive",
-      });
-    }
+  const handleWatchClick = (movieId: number) => {
+    // Open Vidsrc player in new tab
+    window.open(getStreamingUrl(movieId), '_blank');
+    
+    toast({
+      title: "Opening Movie Player",
+      description: "Loading video player...",
+    });
   };
 
   if (movieError) {
