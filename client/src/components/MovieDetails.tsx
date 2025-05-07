@@ -14,6 +14,7 @@ interface MovieDetailsProps {
 const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
   const { toast } = useToast();
   const [isClosing, setIsClosing] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   // Fetch movie details
   const { data: movie, isLoading: isLoadingMovie } = useQuery({
@@ -43,7 +44,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
     } else {
       document.body.style.overflow = 'auto';
     }
-    
+
     return () => {
       document.body.style.overflow = 'auto';
     };
@@ -56,13 +57,14 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
         handleClose();
       }
     };
-    
+
     window.addEventListener('keydown', handleEscKey);
     return () => window.removeEventListener('keydown', handleEscKey);
   }, [isOpen]);
 
   const handleClose = () => {
     setIsClosing(true);
+    setIsVideoOpen(false); //Added to close the video player on modal close.
     setTimeout(() => {
       setIsClosing(false);
       onClose();
@@ -71,13 +73,10 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
 
   const handleWatchClick = () => {
     if (!movie) return;
-    
-    // Open Vidsrc player in new tab with HD quality
-    const videoUrl = getStreamingUrl(parseInt(movieId), 'hd');
-    window.open(videoUrl, '_blank', 'width=1280,height=720');
-    
+    setIsVideoOpen(true);
+
     toast({
-      title: "Opening Movie Player",
+      title: "Opening Video Player",
       description: `Watch "${movie.title}" in HD quality`,
     });
   };
@@ -99,7 +98,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
         >
           <i className="fas fa-times"></i>
         </button>
-        
+
         {isLoading ? (
           <div className="flex justify-center items-center h-screen">
             <div className="w-12 h-12 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
@@ -115,7 +114,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                 className="w-full h-full object-cover"
               />
             </div>
-            
+
             {/* Movie Info */}
             <div className="flex flex-col md:flex-row -mt-20 relative z-20">
               <div className="md:w-1/3 lg:w-1/4 mb-6 md:mb-0 flex-shrink-0">
@@ -134,12 +133,12 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                     {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
                   </span>
                 </div>
-                
+
                 <div className="mb-6">
                   <h3 className="text-white text-xl font-semibold mb-2">Overview</h3>
                   <p className="text-gray-300">{movie.overview}</p>
                 </div>
-                
+
                 {movie.genres && movie.genres.length > 0 && (
                   <div className="mb-6">
                     <h3 className="text-white text-xl font-semibold mb-2">Genres</h3>
@@ -152,7 +151,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                     </div>
                   </div>
                 )}
-                
+
                 <div className="flex gap-3">
                   <button 
                     className="bg-netflix-red hover:bg-opacity-80 text-white py-2 px-5 rounded flex items-center transition"
@@ -163,7 +162,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                 </div>
               </div>
             </div>
-            
+
             {/* Cast */}
             {credits && credits.cast && credits.cast.length > 0 && (
               <div className="mt-10">
@@ -183,7 +182,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                 </div>
               </div>
             )}
-            
+
             {/* Similar Movies */}
             {similarMovies && similarMovies.results && similarMovies.results.length > 0 && (
               <div className="mt-10">
@@ -197,6 +196,12 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                     />
                   ))}
                 </div>
+              </div>
+            )}
+            {/* Video Player Modal */}
+            {isVideoOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                <VideoPlayer movie={movie} onClose={() => setIsVideoOpen(false)} />
               </div>
             )}
           </div>
@@ -217,5 +222,16 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
     </div>
   );
 };
+
+const VideoPlayer = ({movie, onClose}: {movie: any, onClose: () => void}) => { // Placeholder VideoPlayer component
+  //  Replace this with your actual video player implementation using the movie data.  Consider using a library like React Player.
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-4">
+      <button onClick={onClose} className="absolute top-2 right-2">X</button>
+      <h1>{movie?.title}</h1>
+      <p>Replace this with your video player</p>
+    </div>
+  );
+}
 
 export default MovieDetails;
