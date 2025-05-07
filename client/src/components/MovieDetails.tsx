@@ -167,7 +167,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
                     className="bg-netflix-red hover:bg-opacity-80 text-white py-2 px-5 rounded flex items-center transition"
                     onClick={handleWatchClick}
                   >
-                    <i className="fas fa-play mr-2"></i> Watch on Telegram
+                    <i className="fas fa-play mr-2"></i> Watch
                   </button>
                 </div>
               </div>

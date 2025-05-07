@@ -167,7 +167,7 @@ const MoviePage = () => {
                       className="bg-netflix-red hover:bg-opacity-80 text-white py-3 px-6 rounded flex items-center transition"
                       onClick={() => handleWatchClick(parseInt(id))}
                     >
-                      <i className="fas fa-play mr-2"></i> Watch on Telegram
+                      <i className="fas fa-play mr-2"></i> Watch
                     </button>
                   </div>
                 </div>
