@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { fetchGenres } from '@/lib/api';
+import { cn } from '@/lib/utils';
 
 interface Genre {
   id: number;
@@ -11,6 +12,7 @@ interface Genre {
 const MobileMenu = () => {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [showGenres, setShowGenres] = useState(false);
 
   const { data: genres = [] as Genre[] } = useQuery<Genre[]>({
     queryKey: ['/api/genres'],
@@ -19,10 +21,12 @@ const MobileMenu = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+    setShowGenres(false);
   };
 
   const closeMenu = () => {
     setIsOpen(false);
+    setShowGenres(false);
   };
 
   // Close menu when location changes
@@ -74,7 +78,6 @@ const MobileMenu = () => {
             href="/" 
             className="block text-white hover:text-netflix-red transition-colors"
             onClick={(e) => {
-              // If we're already on the home page, just scroll to top
               if (location === '/') {
                 e.preventDefault();
                 closeMenu();
@@ -87,25 +90,33 @@ const MobileMenu = () => {
           >
             Home
           </a>
-          <a
-            href="#"
-            className="block text-white hover:text-netflix-red transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-              closeMenu();
-              const genresSection = document.getElementById('genres-section');
-              if (genresSection) {
-                window.scrollTo({
-                  top: genresSection.offsetTop - 100,
-                  behavior: 'smooth'
-                });
-              } else {
-                window.location.href = '/?section=genres';
-              }
-            }}
-          >
-            Genres
-          </a>
+          
+          {/* Genres Navigation */}
+          <div>
+            <button
+              className="w-full flex items-center justify-between text-white hover:text-netflix-red transition-colors"
+              onClick={() => setShowGenres(!showGenres)}
+            >
+              <span>Genres</span>
+              <i className={`fas fa-chevron-${showGenres ? 'up' : 'down'} text-sm`}></i>
+            </button>
+            
+            <div className={cn(
+              "pl-4 space-y-3 overflow-hidden transition-all duration-300",
+              showGenres ? "max-h-[500px] mt-3" : "max-h-0"
+            )}>
+              {genres.map((genre: Genre) => (
+                <Link 
+                  key={genre.id} 
+                  href={`/genre/${genre.id}`} 
+                  className="block text-white hover:text-netflix-red transition-colors"
+                >
+                  {genre.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+          
           <a 
             href="https://t.me/movies404update"
             target="_blank"
@@ -122,19 +133,6 @@ const MobileMenu = () => {
           >
             Premium
           </Link>
-          <hr className="border-netflix-gray my-4" />
-          <div className="space-y-3">
-            <p className="text-gray-400 uppercase text-sm font-medium">Genres</p>
-            {genres.map((genre: Genre) => (
-              <Link 
-                key={genre.id} 
-                href={`/genre/${genre.id}`} 
-                className="block text-white hover:text-netflix-red transition-colors"
-              >
-                {genre.name}
-              </Link>
-            ))}
-          </div>
         </nav>
       </div>
     </div>
