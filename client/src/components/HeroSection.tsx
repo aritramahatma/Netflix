@@ -46,7 +46,13 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
     : Number(movie.vote_average).toFixed(1);
 
   const handleWatchClick = () => {
-    setIsVideoOpen(true); // Open the video player
+    if (!movie) return;
+    const streamingUrl = getStreamingUrl(movie.id);
+    window.open(streamingUrl, '_blank');
+    // toast({
+    //   title: "Opening Movie Player",
+    //   description: `Watch "${movie.title}" in HD quality`,
+    // });
   };
 
   return (
@@ -82,49 +88,49 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
           </div>
         </div>
       </div>
-      {isVideoOpen && <VideoPlayer movieId={movie.id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />}
+      {/* {isVideoOpen && <VideoPlayer movieId={movie.id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />} */}
     </section>
   );
 };
 
-const VideoPlayer = ({ movieId, isOpen, onClose }: { movieId: number; isOpen: boolean; onClose: () => void }) => {
-  const [videoUrl, setVideoUrl] = useState('');
+// const VideoPlayer = ({ movieId, isOpen, onClose }: { movieId: number; isOpen: boolean; onClose: () => void }) => {
+//   const [videoUrl, setVideoUrl] = useState('');
 
-  useEffect(() => {
-    // Replace this with your actual video URL retrieval logic
-    const getVideo = async () => {
-      try {
-        const url = await getStreamingUrl(movieId);
-        setVideoUrl(url);
-      } catch (error) {
-        console.error("Error fetching video URL:", error);
-      }
-    };
-    if (isOpen) {
-      getVideo();
-    }
-  }, [movieId, isOpen]);
+//   useEffect(() => {
+//     // Replace this with your actual video URL retrieval logic
+//     const getVideo = async () => {
+//       try {
+//         const url = await getStreamingUrl(movieId);
+//         setVideoUrl(url);
+//       } catch (error) {
+//         console.error("Error fetching video URL:", error);
+//       }
+//     };
+//     if (isOpen) {
+//       getVideo();
+//     }
+//   }, [movieId, isOpen]);
 
-  if (!isOpen) return null;
+//   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-4">
-        <button className="absolute top-2 right-2" onClick={onClose}>
-          &times;
-        </button>
-        {videoUrl ? (
-          <video width="640" height="360" controls>
-            <source src={videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <p>Loading video...</p>
-        )}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+//       <div className="bg-white rounded-lg shadow-lg p-4">
+//         <button className="absolute top-2 right-2" onClick={onClose}>
+//           &times;
+//         </button>
+//         {videoUrl ? (
+//           <video width="640" height="360" controls>
+//             <source src={videoUrl} type="video/mp4" />
+//             Your browser does not support the video tag.
+//           </video>
+//         ) : (
+//           <p>Loading video...</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
 
 
 export default HeroSection;
