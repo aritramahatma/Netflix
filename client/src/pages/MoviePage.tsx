@@ -207,14 +207,14 @@ const MoviePage = () => {
       </main>
       
       <BackToTop />
+      {isVideoOpen && movie && (
+        <VideoPlayer 
+          movieId={movie.id} 
+          isOpen={isVideoOpen} 
+          onClose={() => setIsVideoOpen(false)} 
+        />
+      )}
     </div>
-    {isVideoOpen && movie && (
-      <VideoPlayer 
-        movieId={movie.id} 
-        isOpen={isVideoOpen} 
-        onClose={() => setIsVideoOpen(false)} 
-      />
-    )}
   );
 };
 
