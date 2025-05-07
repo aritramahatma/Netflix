@@ -57,8 +57,9 @@ export const fetchGenres = async () => {
   return res.json();
 };
 
-export const getStreamingUrl = (movieId: number) => {
-  return `https://vidsrc.to/embed/movie/${movieId}`;
+export const getStreamingUrl = (movieId: number, quality: 'hd' | 'fhd' = 'hd') => {
+  const baseUrl = `https://vidsrc.xyz/embed/movie/${movieId}`;
+  return `${baseUrl}?api_key=4789fec446eaf7997af0&quality=${quality}`;
 };
 
 export const addToWatchHistory = async (movieId: number) => {

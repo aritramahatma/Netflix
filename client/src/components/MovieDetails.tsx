@@ -72,12 +72,13 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
   const handleWatchClick = () => {
     if (!movie) return;
     
-    // Open Vidsrc player in new tab
-    window.open(getStreamingUrl(parseInt(movieId)), '_blank');
+    // Open Vidsrc player in new tab with HD quality
+    const videoUrl = getStreamingUrl(parseInt(movieId), 'hd');
+    window.open(videoUrl, '_blank', 'width=1280,height=720');
     
     toast({
       title: "Opening Movie Player",
-      description: `Watch "${movie.title}" now.`,
+      description: `Watch "${movie.title}" in HD quality`,
     });
   };
 
