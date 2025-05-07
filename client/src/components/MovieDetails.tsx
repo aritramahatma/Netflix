@@ -196,7 +196,7 @@ const MovieDetails = ({ movieId, isOpen, onClose }: MovieDetailsProps) => {
             {/* Similar Movies */}
             {similarMovies && similarMovies.results && similarMovies.results.length > 0 && (
               <div className="mt-10">
-                <h3 className="text-netflix-red text-2xl font-bold mb-4">Similar Movies</h3>
+                <h3 className="text-white text-2xl font-bold mb-4">Similar Movies</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {similarMovies.results.slice(0, 5).map(movie => (
                     <MovieCard 
