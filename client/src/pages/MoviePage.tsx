@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import MobileMenu from '@/components/MobileMenu';
 import BackToTop from '@/components/BackToTop';
-import { fetchMovieById, fetchMovieCredits, fetchSimilarMovies, addToWatchHistory } from '@/lib/api';
+import { fetchMovieById, fetchMovieCredits, fetchSimilarMovies, addToWatchHistory, getStreamingUrl } from '@/lib/api';
 import { getPosterUrl, getBackdropUrl, getProfileUrl, formatRuntime, getYearFromDate } from '@/lib/tmdb';
 import MovieCard from '@/components/MovieCard';
 import { useToast } from '@/hooks/use-toast';
