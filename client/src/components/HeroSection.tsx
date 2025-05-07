@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { getBackdropUrl, getYearFromDate } from '@/lib/tmdb';
+import { getStreamingUrl } from '@/lib/api';
 
 interface Movie {
   id: number;
@@ -44,9 +45,8 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
     : Number(movie.vote_average).toFixed(1);
 
   const handleWatchClick = () => {
-    if (onWatchClick) {
-      onWatchClick(movie.id);
-    }
+    const streamingUrl = getStreamingUrl(movie.id);
+    window.open(streamingUrl, '_blank');
   };
 
   return (
