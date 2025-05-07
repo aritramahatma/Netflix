@@ -41,12 +41,12 @@ const MoviePage = () => {
 
   const isLoading = isLoadingMovie || isLoadingCredits || isLoadingSimilar;
 
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+
   const handleWatchClick = (movieId: number) => {
-    // Open Vidsrc player in new tab
-    window.open(getStreamingUrl(movieId), '_blank');
-    
+    setIsVideoOpen(true);
     toast({
-      title: "Opening Movie Player",
+      title: "Opening Video Player",
       description: "Loading video player...",
     });
   };
@@ -207,6 +207,13 @@ const MoviePage = () => {
       
       <BackToTop />
     </div>
+    {isVideoOpen && movie && (
+      <VideoPlayer 
+        movieId={movie.id} 
+        isOpen={isVideoOpen} 
+        onClose={() => setIsVideoOpen(false)} 
+      />
+    )}
   );
 };
 
