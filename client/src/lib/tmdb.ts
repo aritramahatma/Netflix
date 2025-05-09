@@ -28,17 +28,17 @@ export const PROFILE_SIZES = {
 
 // Build image URLs
 export const getPosterUrl = (path: string | null, size = POSTER_SIZES.lg) => {
-  if (!path) return 'https://ibb.co/fY0LH7KM';
+  if (!path) return 'https://i.ibb.co/8X7hTpN/404-movie-poster-default.jpg';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
 export const getBackdropUrl = (path: string | null, size = BACKDROP_SIZES.lg) => {
-  if (!path) return 'https://ibb.co/fY0LH7KM';
+  if (!path) return 'https://i.ibb.co/8X7hTpN/404-movie-poster-default.jpg';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
 export const getProfileUrl = (path: string | null, size = PROFILE_SIZES.sm) => {
-  if (!path) return 'https://ibb.co/v7m58xn';
+  if (!path) return 'https://i.ibb.co/0QpRBRb/404-movie-profile-default.jpg';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
