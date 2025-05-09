@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
+import MovieCard from '@/components/MovieCard';
 import MobileMenu from '@/components/MobileMenu';
 import HeroSection from '@/components/HeroSection';
 import MovieGrid from '@/components/MovieGrid';
