@@ -14,12 +14,12 @@ interface MovieCardProps {
 const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
   const { id, title, poster_path, vote_average } = movie;
 
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
-
   const handleWatchClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsVideoOpen(true);
+    if (onWatchClick) {
+      onWatchClick(id);
+    }
   };
 
   // Format the vote average to one decimal place
@@ -50,7 +50,6 @@ const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
         </div>
       </div>
     </Link>
-    {isVideoOpen && <VideoPlayer movieId={id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />}
   );
 };
 
