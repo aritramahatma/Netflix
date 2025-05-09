@@ -9,31 +9,6 @@ import { getPosterUrl, getBackdropUrl, getProfileUrl, formatRuntime, getYearFrom
 import MovieCard from '@/components/MovieCard';
 import { useToast } from '@/hooks/use-toast';
 
-// New component for the skeleton loader
-const MovieDetailsSkeleton = () => (
-  <div className="container mx-auto px-4 mt-8">
-    <div className="flex flex-col md:flex-row gap-8">
-      {/* Movie Poster Skeleton - Left Column */}
-      <div className="md:w-1/3 lg:w-1/4">
-        <div className="animate-pulse bg-gray-700 rounded-lg shadow-xl w-full h-64"></div>
-      </div>
-
-      {/* Movie Details Skeleton - Right Column */}
-      <div className="md:w-2/3 lg:w-3/4">
-        <div className="animate-pulse">
-          <div className="bg-gray-700 h-8 w-1/2 mb-4 rounded"></div>
-          <div className="bg-gray-700 h-4 w-1/4 mb-2 rounded"></div>
-          <div className="bg-gray-700 h-4 w-1/4 mb-6 rounded"></div>
-          <div className="bg-gray-700 h-6 w-full mb-3 rounded"></div>
-          <div className="bg-gray-700 h-6 w-full mb-3 rounded"></div>
-          <div className="bg-gray-700 h-6 w-2/3 mb-8 rounded"></div>
-          <div className="bg-gray-700 h-10 w-1/3 rounded"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
 const MoviePage = () => {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
@@ -103,10 +78,12 @@ const MoviePage = () => {
     <div className="min-h-screen bg-netflix-black">
       <Header />
       <MobileMenu />
-
+      
       <main className="pt-16 pb-16">
         {isLoading ? (
-          <MovieDetailsSkeleton />
+          <div className="flex justify-center items-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
+            <div className="w-12 h-12 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
+          </div>
         ) : movie ? (
           <div>
             {/* Movie Backdrop - SECTION 1 (Only backdrop image) */}
@@ -138,7 +115,7 @@ const MoviePage = () => {
                 {/* Movie Details - Right Column */}
                 <div className="md:w-2/3 lg:w-3/4">
                   <h1 className="text-white text-3xl md:text-4xl font-bold mb-4">{movie.title}</h1>
-
+                  
                   <div className="flex flex-wrap items-center mb-6">
                     <span className="text-gray-300 text-sm md:text-base mr-4">{getYearFromDate(movie.release_date)}</span>
                     {movie.runtime && (
@@ -151,13 +128,13 @@ const MoviePage = () => {
                       {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
                     </span>
                   </div>
-
+                  
                   {/* Overview */}
                   <div className="mb-6">
                     <h3 className="text-white text-xl font-semibold mb-3">Overview</h3>
                     <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
                   </div>
-
+                  
                   {/* Genres */}
                   {movie.genres && movie.genres.length > 0 && (
                     <div className="mb-6">
@@ -174,7 +151,7 @@ const MoviePage = () => {
                       </div>
                     </div>
                   )}
-
+                  
                   {/* Watch Button */}
                   <div className="mb-8">
                     <button 
@@ -187,7 +164,7 @@ const MoviePage = () => {
                 </div>
               </div>
             </div>
-
+            
             {/* Cast Section - SECTION 3 */}
             <div className="container mx-auto px-4 mt-12">
               {credits && credits.cast && credits.cast.length > 0 && (
@@ -208,7 +185,7 @@ const MoviePage = () => {
                   </div>
                 </div>
               )}
-
+              
               {/* Similar Movies Section - SECTION 4 */}
               {similarMovies && similarMovies.results && similarMovies.results.length > 0 && (
                 <div className="mb-8">
@@ -228,7 +205,7 @@ const MoviePage = () => {
           </div>
         ) : null}
       </main>
-
+      
       <BackToTop />
       {isVideoOpen && movie && (
         <VideoPlayer 

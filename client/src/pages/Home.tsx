@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
-import MovieCard from '@/components/MovieCard';
 import MobileMenu from '@/components/MobileMenu';
 import HeroSection from '@/components/HeroSection';
 import MovieGrid from '@/components/MovieGrid';
@@ -76,35 +75,36 @@ const Home = () => {
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />
         ) : null}
         
-        {/* Trending Movies Section */}
-        {section === null && (
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">Trending Now</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {trendingMovies?.results?.slice(0, 5).map((movie: any) => (
-                <MovieCard key={movie.id} movie={movie} onWatchClick={handleWatchClick} />
-              ))}
-            </div>
-          </div>
+        {/* All Trending Movies */}
+        {(section === null || section === 'trending') && (
+          <MovieGrid 
+            title="Trending Now" 
+            viewAllLink="/?section=trending" 
+            type="trending"
+          />
         )}
-
+        
         {/* Genre Selector */}
-        {section === null && (
-          <div className="mb-8">
-            <GenreSelector />
-          </div>
+        {(section === null || section === 'genres') && (
+          <GenreSelector />
         )}
-
+        
+        {/* All Popular Movies */}
+        {(section === null || section === 'popular') && (
+          <MovieGrid 
+            title="Popular Movies" 
+            viewAllLink="/?section=popular" 
+            type="popular"
+          />
+        )}
+        
         {/* Other Movies Section */}
-        {section === null && (
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">Other Movies</h2>
-            <InfiniteScroll 
-              queryKey={['/api/movies/discover']}
-              fetchFn={(page) => fetchAllMovies(page)}
-              title=""
-            />
-          </div>
+        {(section === null || section === 'others') && (
+          <MovieGrid 
+            title="Other Movies" 
+            viewAllLink="/?section=others" 
+            type="discover"
+          />
         )}
         
         {/* Infinite Scroll for Sections */}
