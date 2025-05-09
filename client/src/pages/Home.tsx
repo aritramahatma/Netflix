@@ -5,6 +5,7 @@ import MovieCard from '@/components/MovieCard';
 import MobileMenu from '@/components/MobileMenu';
 import HeroSection from '@/components/HeroSection';
 import MovieGrid from '@/components/MovieGrid';
+import VideoPlayer from '@/components/VideoPlayer';
 import GenreSelector from '@/components/GenreSelector';
 import BackToTop from '@/components/BackToTop';
 import InfiniteScroll from '@/components/InfiniteScroll';
@@ -36,16 +37,18 @@ const Home = () => {
   
   const trendingMovies = trendingMoviesData as any;
 
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+
   const handleWatchClick = async (movieId: number) => {
     try {
       await addToWatchHistory(movieId);
-      
-      // Open Telegram bot in new tab
-      window.open(`https://t.me/your_movie_bot?start=${movieId}`, '_blank');
+      setSelectedMovieId(movieId);
+      setIsVideoOpen(true);
       
       toast({
-        title: "Movie added to watch history",
-        description: "Opening Telegram bot to watch the movie.",
+        title: "Opening video player",
+        description: "Loading your movie...",
       });
     } catch (error) {
       toast({
@@ -134,6 +137,13 @@ const Home = () => {
       </main>
       
       <BackToTop />
+      {isVideoOpen && selectedMovieId && (
+        <VideoPlayer
+          movieId={selectedMovieId}
+          isOpen={isVideoOpen}
+          onClose={() => setIsVideoOpen(false)}
+        />
+      )}
     </div>
   );
 };
