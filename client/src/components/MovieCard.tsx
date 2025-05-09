@@ -1,38 +1,56 @@
-import React, { memo } from 'react';
-import { Movie } from '@shared/schema';
-import { VideoPlayer } from './VideoPlayer';
+import { Link } from 'wouter';
+import { getPosterUrl } from '@/lib/tmdb';
 
 interface MovieCardProps {
-  movie: Movie;
+  movie: {
+    id: number;
+    title: string;
+    poster_path: string | null;
+    vote_average: number;
+  };
+  onWatchClick?: (movieId: number) => void;
 }
 
-const MovieCard = memo(({ movie }: MovieCardProps) => {
-  const [showVideo, setShowVideo] = React.useState(false);
-  const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
+  const { id, title, poster_path, vote_average } = movie;
+
+  const handleWatchClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onWatchClick) {
+      onWatchClick(id);
+    }
+  };
+
+  // Format the vote average to one decimal place
+  const rating = typeof vote_average === 'number' 
+    ? vote_average.toFixed(1) 
+    : Number(vote_average).toFixed(1);
 
   return (
-    <>
-      <div className="relative group cursor-pointer" onClick={() => setShowVideo(true)}>
-        <img
-          src={posterUrl}
-          alt={movie.title}
-          className="w-full h-auto rounded-lg transition-transform duration-300 group-hover:scale-105"
+    <Link href={`/movie/${id}`}>
+      <div className="movie-card rounded-lg overflow-hidden bg-netflix-dark relative cursor-pointer">
+        <img 
           loading="lazy"
+          src={getPosterUrl(poster_path)} 
+          alt={`${title} poster`} 
+          className="w-full h-auto aspect-[2/3] object-cover"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-          <button className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-netflix-red text-white px-6 py-2 rounded-full">
-            Play
+        <div className="movie-actions absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center space-y-3 opacity-0 transition-opacity">
+          <button 
+            className="bg-netflix-red text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-opacity-80 transition"
+            onClick={handleWatchClick}
+          >
+            <i className="fas fa-play"></i>
           </button>
+          <h4 className="text-white font-medium text-center px-2">{title}</h4>
+          <div className="flex items-center">
+            <span className="bg-netflix-red text-white px-2 py-0.5 text-xs rounded">{rating}</span>
+          </div>
         </div>
       </div>
-      <VideoPlayer
-        isOpen={showVideo}
-        onClose={() => setShowVideo(false)}
-        movieId={movie.id}
-      />
-    </>
+    </Link>
   );
-});
+};
 
-MovieCard.displayName = 'MovieCard';
 export default MovieCard;
