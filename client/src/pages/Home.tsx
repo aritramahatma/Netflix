@@ -22,7 +22,6 @@ const Home = () => {
   const { toast } = useToast();
   const [location] = useLocation();
   const [section, setSection] = useState<string | null>(null);
-  const [showAllMovies, setShowAllMovies] = useState(false);
 
   // Extract section parameter from URL
   useEffect(() => {
@@ -35,16 +34,16 @@ const Home = () => {
     queryKey: ['/api/movies/trending'],
     queryFn: () => fetchTrendingMovies(),
   });
-
+  
   const trendingMovies = trendingMoviesData as any;
 
   const handleWatchClick = async (movieId: number) => {
     try {
       await addToWatchHistory(movieId);
-
+      
       // Open Telegram bot in new tab
       window.open(`https://t.me/your_movie_bot?start=${movieId}`, '_blank');
-
+      
       toast({
         title: "Movie added to watch history",
         description: "Opening Telegram bot to watch the movie.",
@@ -67,8 +66,8 @@ const Home = () => {
     <div className="min-h-screen bg-netflix-black">
       <Header />
       <MobileMenu />
-
-      <main className="container mx-auto px-4 pt-24 pb-16 relative">
+      
+      <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Hero Section */}
         {isLoading ? (
           <div className="relative rounded-lg overflow-hidden" style={{ height: '50vh', minHeight: '400px' }}>
@@ -82,7 +81,7 @@ const Home = () => {
         ) : heroMovie ? (
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />
         ) : null}
-
+        
         {/* All Trending Movies */}
         {(section === null || section === 'trending') && (
           <MovieGrid 
@@ -91,12 +90,12 @@ const Home = () => {
             type="trending"
           />
         )}
-
+        
         {/* Genre Selector */}
         {(section === null || section === 'genres') && (
           <GenreSelector />
         )}
-
+        
         {/* All Popular Movies */}
         {(section === null || section === 'popular') && (
           <MovieGrid 
@@ -105,7 +104,7 @@ const Home = () => {
             type="popular"
           />
         )}
-
+        
         {/* Other Movies Section */}
         {(section === null || section === 'others') && (
           <MovieGrid 
@@ -114,7 +113,7 @@ const Home = () => {
             type="discover"
           />
         )}
-
+        
         {/* Infinite Scroll for Sections */}
         {section === 'trending' && (
           <InfiniteScroll 
@@ -123,7 +122,7 @@ const Home = () => {
             title="All Trending Movies"
           />
         )}
-
+        
         {section === 'popular' && (
           <InfiniteScroll 
             queryKey={['/api/movies/popular', 0]}
@@ -131,7 +130,7 @@ const Home = () => {
             title="All Popular Movies"
           />
         )}
-
+        
         {section === 'others' && (
           <InfiniteScroll 
             queryKey={['/api/movies/discover']}
@@ -140,41 +139,8 @@ const Home = () => {
           />
         )}
       </main>
-
+      
       <BackToTop />
-
-      {/* See All Section */}
-      <div className="relative py-16 border-t border-gray-800 mt-16">
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10">
-          <button 
-            onClick={() => setShowAllMovies(prev => !prev)}
-            className="bg-black/40 backdrop-blur-sm hover:bg-netflix-red/30 text-white font-bold py-3 px-12 rounded-full border border-netflix-red/50 transition-all duration-300 shadow-lg hover:shadow-netflix-red/20 hover:scale-105"
-          >
-            {showAllMovies ? 'Show Less' : 'See All Movies'}
-          </button>
-        </div>
-
-        {showAllMovies && (
-          <div className="container mx-auto px-4">
-            <InfiniteScroll 
-              queryKey={['/api/movies/discover']}
-              fetchFn={(page) => fetchAllMovies(page)}
-              title=""
-            />
-          </div>
-        )}
-
-        {/* Loading Skeletons */}
-        {showAllMovies && (
-          <div className="container mx-auto px-4 mt-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {[...Array(10)].map((_, i) => (
-                <MovieCardSkeleton key={i} />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
