@@ -22,6 +22,7 @@ const Home = () => {
   const { toast } = useToast();
   const [location] = useLocation();
   const [section, setSection] = useState<string | null>(null);
+  const [showAllMovies, setShowAllMovies] = useState(false);
 
   // Extract section parameter from URL
   useEffect(() => {
@@ -142,14 +143,25 @@ const Home = () => {
       
       <BackToTop />
       
-      {/* See More Section */}
+      {/* See All Section */}
       <div className="text-center py-8 border-t border-gray-800 mt-16">
-        <h2 className="text-2xl font-bold text-white mb-8">More Movies For You</h2>
-        <InfiniteScroll 
-          queryKey={['/api/movies/discover']}
-          fetchFn={(page) => fetchAllMovies(page)}
-          title=""
-        />
+        <div className="flex items-center justify-between container mx-auto px-4 mb-8">
+          <h2 className="text-2xl font-bold text-white">All Movies</h2>
+          <button 
+            onClick={() => setShowAllMovies(prev => !prev)}
+            className="bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+          >
+            {showAllMovies ? 'Show Less' : 'See All'}
+          </button>
+        </div>
+        
+        {showAllMovies && (
+          <InfiniteScroll 
+            queryKey={['/api/movies/discover']}
+            fetchFn={(page) => fetchAllMovies(page)}
+            title=""
+          />
+        )}
       </div>
     </div>
   );
