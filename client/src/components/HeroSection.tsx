@@ -47,12 +47,11 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
 
   const handleWatchClick = () => {
     if (!movie) return;
-    const streamingUrl = getStreamingUrl(movie.id);
-    window.open(streamingUrl, '_blank');
-    // toast({
-    //   title: "Opening Movie Player",
-    //   description: `Watch "${movie.title}" in HD quality`,
-    // });
+    setIsVideoOpen(true);
+    toast({
+      title: "Opening Movie Player",
+      description: `Watch "${movie.title}" in HD quality`,
+    });
   };
 
   return (
@@ -88,7 +87,7 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
           </div>
         </div>
       </div>
-      {/* {isVideoOpen && <VideoPlayer movieId={movie.id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />} */}
+      {isVideoOpen && <VideoPlayer movieId={movie.id} isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />}
     </section>
   );
 };
