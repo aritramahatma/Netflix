@@ -106,11 +106,7 @@ const InfiniteScroll = ({ queryKey, fetchFn, title }: InfiniteScrollProps) => {
     <section className="mb-10">
       <h2 className="text-white text-2xl font-bold mb-4">{title}</h2>
       
-      {isLoading && page === 1 && (
-        <div className="flex justify-center py-10">
-          <div className="w-10 h-10 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      )}
+      {isLoading && page === 1 && <MovieGridSkeleton />}
       
       {error && page === 1 && (
         <div className="bg-netflix-dark p-8 rounded-lg text-center">
