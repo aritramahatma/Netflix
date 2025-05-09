@@ -142,16 +142,14 @@ const Home = () => {
       
       <BackToTop />
       
-      {/* All Movies Section */}
-      <div className="py-8 border-t border-gray-800 mt-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-white mb-8">All Movies</h2>
-          <InfiniteScroll 
-            queryKey={['/api/movies/discover']}
-            fetchFn={(page) => fetchAllMovies(page)}
-            title=""
-          />
-        </div>
+      {/* See More Section */}
+      <div className="text-center py-8 border-t border-gray-800 mt-16">
+        <h2 className="text-2xl font-bold text-white mb-8">More Movies For You</h2>
+        <InfiniteScroll 
+          queryKey={['/api/movies/discover']}
+          fetchFn={(page) => fetchAllMovies(page)}
+          title=""
+        />
       </div>
     </div>
   );
