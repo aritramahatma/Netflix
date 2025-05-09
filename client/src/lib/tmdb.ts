@@ -28,17 +28,17 @@ export const PROFILE_SIZES = {
 
 // Build image URLs
 export const getPosterUrl = (path: string | null, size = POSTER_SIZES.lg) => {
-  if (!path) return '/placeholder-poster.svg';
+  if (!path) return 'https://ibb.co/fY0LH7KM';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
 export const getBackdropUrl = (path: string | null, size = BACKDROP_SIZES.lg) => {
-  if (!path) return '/placeholder-backdrop.svg';
+  if (!path) return 'https://ibb.co/fY0LH7KM';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
 export const getProfileUrl = (path: string | null, size = PROFILE_SIZES.sm) => {
-  if (!path) return '/placeholder-profile.svg';
+  if (!path) return 'https://ibb.co/v7m58xn';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
