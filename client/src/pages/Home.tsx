@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Skeleton } from "@/components/ui/skeleton";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import MobileMenu from '@/components/MobileMenu';
@@ -68,8 +70,13 @@ const Home = () => {
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Hero Section */}
         {isLoading ? (
-          <div className="relative rounded-lg overflow-hidden flex justify-center items-center" style={{ height: '50vh', minHeight: '400px' }}>
-            <div className="w-12 h-12 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
+          <div className="relative rounded-lg overflow-hidden" style={{ height: '50vh', minHeight: '400px' }}>
+            <Skeleton className="w-full h-full" />
+            <div className="absolute bottom-0 left-0 p-8 w-full">
+              <Skeleton className="h-12 w-1/3 mb-4" />
+              <Skeleton className="h-4 w-2/3 mb-2" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
           </div>
         ) : heroMovie ? (
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />

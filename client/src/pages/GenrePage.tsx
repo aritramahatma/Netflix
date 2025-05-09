@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { Skeleton } from "@/components/ui/skeleton";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
@@ -55,8 +57,14 @@ const GenrePage = () => {
       
       <main className="container mx-auto px-4 pt-24 pb-16">
         {isLoadingGenres ? (
-          <div className="flex justify-center py-10">
-            <div className="w-10 h-10 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
+          <div className="py-10">
+            <Skeleton className="h-8 w-1/3 mb-4" />
+            <Skeleton className="h-4 w-1/2 mb-8" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {Array(10).fill(0).map((_, i) => (
+                <MovieCardSkeleton key={i} />
+              ))}
+            </div>
           </div>
         ) : (
           <>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Skeleton } from "@/components/ui/skeleton";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
@@ -81,8 +83,25 @@ const MoviePage = () => {
       
       <main className="pt-16 pb-16">
         {isLoading ? (
-          <div className="flex justify-center items-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
-            <div className="w-12 h-12 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
+          <div style={{ minHeight: 'calc(100vh - 200px)' }}>
+            <div className="w-full h-[350px] mb-8">
+              <Skeleton className="w-full h-full" />
+            </div>
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="md:w-1/3 lg:w-1/4">
+                  <Skeleton className="w-full aspect-[2/3] rounded-lg" />
+                </div>
+                <div className="md:w-2/3 lg:w-3/4">
+                  <Skeleton className="h-8 w-2/3 mb-4" />
+                  <Skeleton className="h-4 w-1/3 mb-6" />
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-2/3 mb-6" />
+                  <Skeleton className="h-10 w-32" />
+                </div>
+              </div>
+            </div>
           </div>
         ) : movie ? (
           <div>
