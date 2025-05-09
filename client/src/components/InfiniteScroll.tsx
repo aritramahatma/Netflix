@@ -54,7 +54,7 @@ const InfiniteScroll = ({ queryKey, fetchFn, title }: InfiniteScrollProps) => {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <SkeletonLoader />;
   }
 
