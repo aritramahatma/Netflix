@@ -7,7 +7,6 @@ import Home from "@/pages/Home";
 import MoviePage from "@/pages/MoviePage";
 import GenrePage from "@/pages/GenrePage";
 import { useEffect } from "react";
-import Footer from './components/Footer';
 
 function Router() {
   return (
@@ -30,7 +29,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router />
       <Toaster />
-      <Footer />
     </QueryClientProvider>
   );
 }
