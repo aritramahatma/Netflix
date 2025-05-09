@@ -45,13 +45,23 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
     ? movie.vote_average.toFixed(1)
     : Number(movie.vote_average).toFixed(1);
 
-  const handleWatchClick = () => {
+  const handleWatchClick = async () => {
     if (!movie) return;
-    setIsVideoOpen(true);
-    toast({
-      title: "Opening Movie Player",
-      description: `Watch "${movie.title}" in HD quality`,
-    });
+    try {
+      setIsVideoOpen(true);
+      toast({
+        title: "Opening Movie Player",
+        description: `Loading "${movie.title}" in HD quality`,
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load video player. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

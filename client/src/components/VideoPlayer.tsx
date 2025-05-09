@@ -13,11 +13,12 @@ const VideoPlayer = ({ movieId, isOpen, onClose }: VideoPlayerProps) => {
       <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent">
         <div className="relative pb-[56.25%] h-0">
           <iframe
-            src={`https://vidsrc.xyz/embed/movie/${movieId}?api_key=4789fec446eaf7997af0`}
+            src={`https://vidsrc.xyz/embed/movie/${movieId}`}
             className="absolute top-0 left-0 w-full h-full"
             allowFullScreen
-            allow="autoplay; fullscreen"
-            loading="lazy"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            loading="eager"
+            referrerPolicy="no-referrer"
           />
         </div>
       </DialogContent>
