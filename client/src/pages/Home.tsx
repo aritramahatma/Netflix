@@ -35,16 +35,16 @@ const Home = () => {
     queryKey: ['/api/movies/trending'],
     queryFn: () => fetchTrendingMovies(),
   });
-  
+
   const trendingMovies = trendingMoviesData as any;
 
   const handleWatchClick = async (movieId: number) => {
     try {
       await addToWatchHistory(movieId);
-      
+
       // Open Telegram bot in new tab
       window.open(`https://t.me/your_movie_bot?start=${movieId}`, '_blank');
-      
+
       toast({
         title: "Movie added to watch history",
         description: "Opening Telegram bot to watch the movie.",
@@ -67,7 +67,7 @@ const Home = () => {
     <div className="min-h-screen bg-netflix-black">
       <Header />
       <MobileMenu />
-      
+
       <main className="container mx-auto px-4 pt-24 pb-16 relative">
         {/* Hero Section */}
         {isLoading ? (
@@ -82,7 +82,7 @@ const Home = () => {
         ) : heroMovie ? (
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />
         ) : null}
-        
+
         {/* All Trending Movies */}
         {(section === null || section === 'trending') && (
           <MovieGrid 
@@ -91,12 +91,12 @@ const Home = () => {
             type="trending"
           />
         )}
-        
+
         {/* Genre Selector */}
         {(section === null || section === 'genres') && (
           <GenreSelector />
         )}
-        
+
         {/* All Popular Movies */}
         {(section === null || section === 'popular') && (
           <MovieGrid 
@@ -105,7 +105,7 @@ const Home = () => {
             type="popular"
           />
         )}
-        
+
         {/* Other Movies Section */}
         {(section === null || section === 'others') && (
           <MovieGrid 
@@ -114,7 +114,7 @@ const Home = () => {
             type="discover"
           />
         )}
-        
+
         {/* Infinite Scroll for Sections */}
         {section === 'trending' && (
           <InfiniteScroll 
@@ -123,7 +123,7 @@ const Home = () => {
             title="All Trending Movies"
           />
         )}
-        
+
         {section === 'popular' && (
           <InfiniteScroll 
             queryKey={['/api/movies/popular', 0]}
@@ -131,7 +131,7 @@ const Home = () => {
             title="All Popular Movies"
           />
         )}
-        
+
         {section === 'others' && (
           <InfiniteScroll 
             queryKey={['/api/movies/discover']}
@@ -140,9 +140,9 @@ const Home = () => {
           />
         )}
       </main>
-      
+
       <BackToTop />
-      
+
       {/* See All Section */}
       <div className="relative py-16 border-t border-gray-800 mt-16">
         <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10">
@@ -153,7 +153,7 @@ const Home = () => {
             {showAllMovies ? 'Show Less' : 'See All Movies'}
           </button>
         </div>
-        
+
         {showAllMovies && (
           <div className="container mx-auto px-4">
             <InfiniteScroll 
