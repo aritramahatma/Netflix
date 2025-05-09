@@ -67,7 +67,7 @@ const Home = () => {
       <Header />
       <MobileMenu />
       
-      <main className="container mx-auto px-4 pt-24 pb-16">
+      <main className="container mx-auto px-4 pt-24 pb-16 relative">
         {/* Hero Section */}
         {isLoading ? (
           <div className="relative rounded-lg overflow-hidden" style={{ height: '50vh', minHeight: '400px' }}>
@@ -141,6 +141,16 @@ const Home = () => {
       </main>
       
       <BackToTop />
+      
+      {/* See More Section */}
+      <div className="text-center py-8 border-t border-gray-800 mt-16">
+        <h2 className="text-2xl font-bold text-white mb-8">More Movies For You</h2>
+        <InfiniteScroll 
+          queryKey={['/api/movies/discover']}
+          fetchFn={(page) => fetchAllMovies(page)}
+          title=""
+        />
+      </div>
     </div>
   );
 };
