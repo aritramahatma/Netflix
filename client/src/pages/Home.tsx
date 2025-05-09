@@ -145,22 +145,24 @@ const Home = () => {
       
       {/* See All Section */}
       <div className="text-center py-8 border-t border-gray-800 mt-16">
-        <div className="flex items-center justify-between container mx-auto px-4 mb-8">
-          <h2 className="text-2xl font-bold text-white">All Movies</h2>
+        <div className="flex flex-col items-center justify-center container mx-auto px-4 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">All Movies</h2>
           <button 
             onClick={() => setShowAllMovies(prev => !prev)}
-            className="bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+            className="bg-transparent hover:bg-netflix-red/20 text-white font-bold py-2 px-8 rounded-full border-2 border-netflix-red transition-all duration-300"
           >
             {showAllMovies ? 'Show Less' : 'See All'}
           </button>
         </div>
         
         {showAllMovies && (
-          <InfiniteScroll 
-            queryKey={['/api/movies/discover']}
-            fetchFn={(page) => fetchAllMovies(page)}
-            title=""
-          />
+          <div className="container mx-auto px-4">
+            <InfiniteScroll 
+              queryKey={['/api/movies/discover']}
+              fetchFn={(page) => fetchAllMovies(page)}
+              title=""
+            />
+          </div>
         )}
       </div>
     </div>
