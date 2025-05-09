@@ -13,7 +13,7 @@ interface MovieCardProps {
 
 const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
   const { id, title, poster_path, vote_average } = movie;
-  
+
   const handleWatchClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -26,15 +26,15 @@ const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
   const rating = typeof vote_average === 'number' 
     ? vote_average.toFixed(1) 
     : Number(vote_average).toFixed(1);
-  
+
   return (
     <Link href={`/movie/${id}`}>
       <div className="movie-card rounded-lg overflow-hidden bg-netflix-dark relative cursor-pointer">
         <img 
+          loading="lazy"
           src={getPosterUrl(poster_path)} 
           alt={`${title} poster`} 
           className="w-full h-auto aspect-[2/3] object-cover"
-          loading="lazy"
         />
         <div className="movie-actions absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center space-y-3 opacity-0 transition-opacity">
           <button 
