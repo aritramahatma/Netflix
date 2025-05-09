@@ -10,14 +10,22 @@ interface VideoPlayerProps {
 
 export function VideoPlayer({ isOpen, onClose, movieId }: VideoPlayerProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const handleIframeLoad = useCallback(() => {
     setIsLoading(false);
+    setError(null);
+  }, []);
+
+  const handleIframeError = useCallback(() => {
+    setIsLoading(false);
+    setError('Failed to load video player');
   }, []);
 
   useEffect(() => {
     if (isOpen) {
       setIsLoading(true);
+      setError(null);
     }
   }, [isOpen, movieId]);
 
@@ -30,6 +38,19 @@ export function VideoPlayer({ isOpen, onClose, movieId }: VideoPlayerProps) {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-netflix-red"></div>
             </div>
           )}
+          {error && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="text-white text-center">
+                <p className="mb-2">{error}</p>
+                <button 
+                  onClick={onClose}
+                  className="bg-netflix-red px-4 py-2 rounded hover:bg-opacity-80"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
           <iframe
             key={movieId}
             src={`https://vidsrc.to/embed/movie/${movieId}`}
@@ -37,6 +58,7 @@ export function VideoPlayer({ isOpen, onClose, movieId }: VideoPlayerProps) {
             allowFullScreen
             allow="autoplay; fullscreen; picture-in-picture"
             onLoad={handleIframeLoad}
+            onError={handleIframeError}
             style={{ visibility: isLoading ? 'hidden' : 'visible' }}
           />
         </div>
