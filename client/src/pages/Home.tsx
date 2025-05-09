@@ -7,6 +7,7 @@ import HeroSection from '@/components/HeroSection';
 import MovieGrid from '@/components/MovieGrid';
 import GenreSelector from '@/components/GenreSelector';
 import BackToTop from '@/components/BackToTop';
+import InfiniteScroll from '@/components/InfiniteScroll';
 import { 
   fetchTrendingMovies, 
   fetchPopularMovies,
@@ -20,8 +21,6 @@ const Home = () => {
   const { toast } = useToast();
   const [location] = useLocation();
   const [section, setSection] = useState<string | null>(null);
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
   // Extract section parameter from URL
   useEffect(() => {
@@ -34,16 +33,16 @@ const Home = () => {
     queryKey: ['/api/movies/trending'],
     queryFn: () => fetchTrendingMovies(),
   });
-
+  
   const trendingMovies = trendingMoviesData as any;
 
   const handleWatchClick = async (movieId: number) => {
     try {
       await addToWatchHistory(movieId);
-
+      
       // Open Telegram bot in new tab
       window.open(`https://t.me/your_movie_bot?start=${movieId}`, '_blank');
-
+      
       toast({
         title: "Movie added to watch history",
         description: "Opening Telegram bot to watch the movie.",
@@ -66,7 +65,7 @@ const Home = () => {
     <div className="min-h-screen bg-netflix-black">
       <Header />
       <MobileMenu />
-
+      
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Hero Section */}
         {isLoading ? (
@@ -76,7 +75,7 @@ const Home = () => {
         ) : heroMovie ? (
           <HeroSection movie={heroMovie} onWatchClick={handleWatchClick} />
         ) : null}
-
+        
         {/* Trending Movies Section */}
         {section === null && (
           <div className="mb-8">
@@ -107,7 +106,7 @@ const Home = () => {
             />
           </div>
         )}
-
+        
         {/* Infinite Scroll for Sections */}
         {section === 'trending' && (
           <InfiniteScroll 
@@ -116,7 +115,7 @@ const Home = () => {
             title="All Trending Movies"
           />
         )}
-
+        
         {section === 'popular' && (
           <InfiniteScroll 
             queryKey={['/api/movies/popular', 0]}
@@ -124,7 +123,7 @@ const Home = () => {
             title="All Popular Movies"
           />
         )}
-
+        
         {section === 'others' && (
           <InfiniteScroll 
             queryKey={['/api/movies/discover']}
@@ -133,7 +132,7 @@ const Home = () => {
           />
         )}
       </main>
-
+      
       <BackToTop />
     </div>
   );
