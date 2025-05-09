@@ -14,7 +14,6 @@ interface Movie {
 
 interface MovieCardProps {
   movie: Movie;
-  onWatchClick?: (movieId: number) => void;
 }
 
 const MovieCard = ({ movie }: MovieCardProps) => {
