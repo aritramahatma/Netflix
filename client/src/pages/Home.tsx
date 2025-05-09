@@ -144,14 +144,13 @@ const Home = () => {
       <BackToTop />
       
       {/* See All Section */}
-      <div className="text-center py-8 border-t border-gray-800 mt-16">
-        <div className="flex flex-col items-center justify-center container mx-auto px-4 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4">All Movies</h2>
+      <div className="relative py-16 border-t border-gray-800 mt-16">
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10">
           <button 
             onClick={() => setShowAllMovies(prev => !prev)}
-            className="bg-transparent hover:bg-netflix-red/20 text-white font-bold py-2 px-8 rounded-full border-2 border-netflix-red transition-all duration-300"
+            className="bg-black/40 backdrop-blur-sm hover:bg-netflix-red/30 text-white font-bold py-3 px-12 rounded-full border border-netflix-red/50 transition-all duration-300 shadow-lg hover:shadow-netflix-red/20 hover:scale-105"
           >
-            {showAllMovies ? 'Show Less' : 'See All'}
+            {showAllMovies ? 'Show Less' : 'See All Movies'}
           </button>
         </div>
         
@@ -162,6 +161,17 @@ const Home = () => {
               fetchFn={(page) => fetchAllMovies(page)}
               title=""
             />
+          </div>
+        )}
+
+        {/* Loading Skeletons */}
+        {showAllMovies && (
+          <div className="container mx-auto px-4 mt-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {[...Array(10)].map((_, i) => (
+                <MovieCardSkeleton key={i} />
+              ))}
+            </div>
           </div>
         )}
       </div>
