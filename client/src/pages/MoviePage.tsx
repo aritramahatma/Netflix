@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Skeleton } from "@/components/ui/skeleton";
 import MovieCardSkeleton from "@/components/MovieCardSkeleton";
+import VideoPlayer from "@/components/VideoPlayer";
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
