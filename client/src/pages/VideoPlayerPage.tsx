@@ -5,6 +5,11 @@ import { fetchMovieById } from '@/lib/api';
 import { getBackdropUrl } from '@/lib/tmdb';
 import { getYearFromDate, formatRuntime } from '@/lib/utils';
 
+import { useParams } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMovieById } from '@/lib/api';
+import { formatRuntime, getYearFromDate } from '@/lib/utils';
+
 const VideoPlayerPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
   
