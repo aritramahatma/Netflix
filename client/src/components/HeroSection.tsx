@@ -47,12 +47,7 @@ const HeroSection = ({ movie, onWatchClick }: HeroSectionProps) => {
 
   const handleWatchClick = () => {
     if (!movie) return;
-    const streamingUrl = getStreamingUrl(movie.id);
-    window.open(streamingUrl, '_blank');
-    // toast({
-    //   title: "Opening Movie Player",
-    //   description: `Watch "${movie.title}" in HD quality`,
-    // });
+    window.location.href = `/watch/${movie.imdb_id || movie.id}`;
   };
 
   return (
