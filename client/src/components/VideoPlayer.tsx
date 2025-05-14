@@ -1,16 +1,20 @@
 
-import { Dialog, DialogContent } from './ui/dialog';
+import { useState } from 'react';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface VideoPlayerProps {
-  movieId: number;
+  movieId: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 const VideoPlayer = ({ movieId, isOpen, onClose }: VideoPlayerProps) => {
+  const [fallbackToNewTab, setFallbackToNewTab] = useState(false);
+
   const handleIframeError = () => {
     // Fallback to new tab if embedding fails
     window.open(`https://vidsrc.to/embed/movie/${movieId}`, '_blank');
+    setFallbackToNewTab(true);
     onClose();
   };
 
@@ -24,13 +28,15 @@ const VideoPlayer = ({ movieId, isOpen, onClose }: VideoPlayerProps) => {
 
         {/* Video Player */}
         <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-          <iframe
-            src={`https://vidsrc.to/embed/movie/${movieId}`}
-            className="absolute top-0 left-0 w-full h-full"
-            allowFullScreen
-            allow="autoplay; fullscreen"
-            onError={handleIframeError}
-          />
+          {!fallbackToNewTab && (
+            <iframe
+              src={`https://vidsrc.to/embed/movie/${movieId}`}
+              className="absolute top-0 left-0 w-full h-full"
+              allowFullScreen
+              allow="autoplay; fullscreen"
+              onError={handleIframeError}
+            />
+          )}
         </div>
 
         {/* Bottom Ad Slot */}
