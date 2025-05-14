@@ -21,7 +21,7 @@ const VideoPlayerPage = () => {
       </div>
 
       {/* Video Player */}
-      <div className="relative w-full" style={{ height: 'calc(100vh - 270px)' }}>
+      <div className="relative w-full h-56 md:h-[calc(100vh-270px)]">
         <iframe
           src={`https://vidsrc.to/embed/movie/${movieId}`}
           className="absolute top-0 left-0 w-full h-full"
