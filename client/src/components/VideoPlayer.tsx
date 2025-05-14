@@ -12,7 +12,6 @@ const VideoPlayer = ({ movieId, isOpen, onClose }: VideoPlayerProps) => {
   const [fallbackToNewTab, setFallbackToNewTab] = useState(false);
 
   const handleIframeError = () => {
-    // Fallback to new tab if embedding fails
     window.open(`https://vidsrc.to/embed/movie/${movieId}`, '_blank');
     setFallbackToNewTab(true);
     onClose();
@@ -20,10 +19,10 @@ const VideoPlayer = ({ movieId, isOpen, onClose }: VideoPlayerProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-black">
+      <DialogContent className="max-w-5xl">
         {/* Top Ad Slot */}
-        <div className="w-full h-[90px] bg-netflix-gray flex items-center justify-center text-white border-b border-gray-800">
-          Advertisement
+        <div className="w-full h-[90px] bg-netflix-gray mb-4 flex items-center justify-center">
+          <span className="text-gray-400">Advertisement</span>
         </div>
 
         {/* Video Player */}
@@ -40,8 +39,8 @@ const VideoPlayer = ({ movieId, isOpen, onClose }: VideoPlayerProps) => {
         </div>
 
         {/* Bottom Ad Slot */}
-        <div className="w-full h-[90px] bg-netflix-gray flex items-center justify-center text-white border-t border-gray-800">
-          Advertisement
+        <div className="w-full h-[90px] bg-netflix-gray mt-4 flex items-center justify-center">
+          <span className="text-gray-400">Advertisement</span>
         </div>
       </DialogContent>
     </Dialog>
