@@ -20,6 +20,11 @@ const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
     window.location.href = `/watch/${movie.imdb_id || id}`;
   };
 
+  const handleMoreDetails = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = `/movie/${id}`;
+  };
+
   // Format the vote average to one decimal place
   const rating = typeof vote_average === 'number' 
     ? vote_average.toFixed(1) 
@@ -35,12 +40,21 @@ const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
           className="w-full h-auto aspect-[2/3] object-cover"
         />
         <div className="movie-actions absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center space-y-3 opacity-0 transition-opacity">
-          <button 
-            className="bg-netflix-red text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-opacity-80 transition"
-            onClick={handleWatchClick}
-          >
-            <i className="fas fa-play"></i>
-          </button>
+          <div className="flex flex-col gap-2">
+            <button 
+              className="bg-netflix-red text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-opacity-80 transition"
+              onClick={handleWatchClick}
+            >
+              <i className="fas fa-play"></i>
+            </button>
+            <button 
+              className="bg-white text-netflix-black rounded-full w-12 h-12 flex items-center justify-center hover:bg-opacity-80 transition"
+              onClick={handleMoreDetails}
+              title="More Like This"
+            >
+              <i className="fas fa-info"></i>
+            </button>
+          </div>
           <h4 className="text-white font-medium text-center px-2">{title}</h4>
           <div className="flex items-center">
             <span className="bg-netflix-red text-white px-2 py-0.5 text-xs rounded">{rating}</span>
