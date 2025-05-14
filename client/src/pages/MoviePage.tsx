@@ -47,8 +47,8 @@ const MoviePage = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   const handleWatchClick = (movieId: number) => {
-    setIsVideoOpen(true);
     addToWatchHistory(movieId).catch(console.error);
+    window.location.href = `/watch/${movie?.imdb_id || movieId}`;
   };
 
   if (movieError) {

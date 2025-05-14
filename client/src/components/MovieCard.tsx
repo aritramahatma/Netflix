@@ -17,9 +17,7 @@ const MovieCard = ({ movie, onWatchClick }: MovieCardProps) => {
   const handleWatchClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onWatchClick) {
-      onWatchClick(id);
-    }
+    window.location.href = `/watch/${movie.imdb_id || id}`;
   };
 
   // Format the vote average to one decimal place
