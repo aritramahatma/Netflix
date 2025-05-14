@@ -21,16 +21,14 @@ const VideoPlayerPage = () => {
       </div>
 
       {/* Video Player */}
-      <div className="relative w-full">
-        <div className="aspect-w-16 aspect-h-9">
-          <iframe
-            src={`https://vidsrc.to/embed/movie/${movieId}`}
-            className="absolute top-0 left-0 w-full h-full"
-            allowFullScreen
-            allow="autoplay; fullscreen"
-            onError={() => window.open(`https://vidsrc.to/embed/movie/${movieId}`, '_blank')}
-          />
-        </div>
+      <div className="relative w-full" style={{ height: 'calc(100vh - 270px)' }}>
+        <iframe
+          src={`https://vidsrc.to/embed/movie/${movieId}`}
+          className="absolute top-0 left-0 w-full h-full"
+          allowFullScreen
+          allow="autoplay; fullscreen"
+          onError={() => window.open(`https://vidsrc.to/embed/movie/${movieId}`, '_blank')}
+        />
       </div>
 
       {/* Bottom Ad Slot */}
