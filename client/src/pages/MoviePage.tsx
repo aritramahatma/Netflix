@@ -225,7 +225,7 @@ const MoviePage = () => {
       <BackToTop />
       {isVideoOpen && movie && (
         <VideoPlayer 
-          movieId={movie.id} 
+          movieId={movie.imdb_id || String(movie.id)} 
           isOpen={isVideoOpen} 
           onClose={() => setIsVideoOpen(false)} 
         />
