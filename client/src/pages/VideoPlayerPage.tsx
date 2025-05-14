@@ -64,27 +64,16 @@ const VideoPlayerPage = () => {
           {/* Similar Movies Section */}
           <div className="bg-netflix-black/90 p-4 border-t border-gray-800">
             <div className="container mx-auto">
-              <h2 className="text-xl font-bold text-white mb-4">Similar Movies You Might Like</h2>
+              <h2 className="text-xl font-bold text-white mb-4">Similar Movies</h2>
               <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
                 {movie.similar?.results?.map((similarMovie) => (
-                  <a 
-                    href={`/watch/${similarMovie.id}`} 
-                    key={similarMovie.id} 
-                    className="flex-shrink-0 w-48 transform transition-transform hover:scale-105 cursor-pointer"
-                  >
-                    <div className="relative group">
-                      <img
-                        src={getPosterUrl(similarMovie.poster_path)}
-                        alt={similarMovie.title}
-                        className="w-full h-72 object-cover rounded-lg mb-2"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <button className="bg-netflix-red text-white px-4 py-2 rounded-full">
-                          Watch Now
-                        </button>
-                      </div>
-                    </div>
+                  <div key={similarMovie.id} className="flex-shrink-0 w-48">
+                    <img
+                      src={getPosterUrl(similarMovie.poster_path)}
+                      alt={similarMovie.title}
+                      className="w-full h-72 object-cover rounded-lg mb-2"
+                      loading="lazy"
+                    />
                     <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <span>{getYearFromDate(similarMovie.release_date)}</span>
@@ -93,7 +82,7 @@ const VideoPlayerPage = () => {
                         {similarMovie.vote_average.toFixed(1)}
                       </span>
                     </div>
-                  </a>
+                  </div>
                 ))}
               </div>
             </div>
