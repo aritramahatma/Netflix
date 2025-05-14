@@ -74,7 +74,7 @@ const VideoPlayerPage = () => {
                   >
                     <div className="relative group">
                       <img
-                        src={getPosterUrl(similarMovie.poster_path)}
+                        src={similarMovie.poster_path ? `https://image.tmdb.org/t/p/w500${similarMovie.poster_path}` : 'https://i.ibb.co/8X7hTpN/404-movie-poster-default.jpg'}
                         alt={similarMovie.title}
                         className="w-full h-72 object-cover rounded-lg mb-2"
                         loading="lazy"
