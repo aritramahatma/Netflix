@@ -61,32 +61,7 @@ const VideoPlayerPage = () => {
             </div>
           </div>
 
-          {/* Similar Movies Section */}
-          <div className="bg-netflix-black/90 p-4 border-t border-gray-800">
-            <div className="container mx-auto">
-              <h2 className="text-xl font-bold text-white mb-4">Similar Movies</h2>
-              <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
-                {movie.similar?.results?.map((similarMovie) => (
-                  <div key={similarMovie.id} className="flex-shrink-0 w-48">
-                    <img
-                      src={getPosterUrl(similarMovie.poster_path)}
-                      alt={similarMovie.title}
-                      className="w-full h-72 object-cover rounded-lg mb-2"
-                      loading="lazy"
-                    />
-                    <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <span>{getYearFromDate(similarMovie.release_date)}</span>
-                      <span>•</span>
-                      <span className="bg-netflix-red px-2 py-0.5 rounded text-white">
-                        {similarMovie.vote_average.toFixed(1)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          
         </>
       )}
     </div>
