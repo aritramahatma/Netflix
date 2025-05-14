@@ -46,12 +46,8 @@ const MoviePage = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   const handleWatchClick = (movieId: number) => {
-    const streamingUrl = getStreamingUrl(movieId);
-    window.open(streamingUrl, '_blank');
-    toast({
-      title: "Opening Movie Player",
-      description: "Loading in new tab...",
-    });
+    setIsVideoOpen(true);
+    addToWatchHistory(movieId).catch(console.error);
   };
 
   if (movieError) {
