@@ -94,7 +94,7 @@ const VideoPlayerPage = () => {
                         {similarMovie.vote_average.toFixed(1)}
                       </span>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
