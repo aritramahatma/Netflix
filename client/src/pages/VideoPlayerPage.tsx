@@ -66,7 +66,7 @@ const VideoPlayerPage = () => {
             <div className="container mx-auto">
               <h2 className="text-xl font-bold text-white mb-4">More Like This</h2>
               <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
-                {movie.similar?.results?.slice(0, 10).map((similarMovie) => (
+                {movie?.similar?.results?.slice(0, 10).map((similarMovie) => (
                   <a 
                     href={`/watch/${similarMovie.id}`}
                     key={similarMovie.id} 
@@ -74,7 +74,7 @@ const VideoPlayerPage = () => {
                   >
                     <div className="relative group">
                       <img
-                        src={similarMovie.poster_path ? `https://image.tmdb.org/t/p/w500${similarMovie.poster_path}` : 'https://i.ibb.co/8X7hTpN/404-movie-poster-default.jpg'}
+                        src={getPosterUrl(similarMovie.poster_path)}
                         alt={similarMovie.title}
                         className="w-full h-72 object-cover rounded-lg mb-2"
                         loading="lazy"
