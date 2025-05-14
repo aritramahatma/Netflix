@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Skeleton } from "@/components/ui/skeleton";
-import MovieCardSkeleton from "@/components/MovieCardSkeleton";
-import VideoPlayer from "@/components/VideoPlayer";
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
+import VideoPlayer from '@/components/VideoPlayer';
+import { Skeleton } from "@/components/ui/skeleton";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 import Header from '@/components/Header';
 import MobileMenu from '@/components/MobileMenu';
 import BackToTop from '@/components/BackToTop';
@@ -77,7 +77,7 @@ const MoviePage = () => {
     <div className="min-h-screen bg-netflix-black">
       <Header />
       <MobileMenu />
-      
+
       <main className="pt-16 pb-16">
         {isLoading ? (
           <div style={{ minHeight: 'calc(100vh - 200px)' }}>
@@ -131,7 +131,7 @@ const MoviePage = () => {
                 {/* Movie Details - Right Column */}
                 <div className="md:w-2/3 lg:w-3/4">
                   <h1 className="text-white text-3xl md:text-4xl font-bold mb-4">{movie.title}</h1>
-                  
+
                   <div className="flex flex-wrap items-center mb-6">
                     <span className="text-gray-300 text-sm md:text-base mr-4">{getYearFromDate(movie.release_date)}</span>
                     {movie.runtime && (
@@ -144,13 +144,13 @@ const MoviePage = () => {
                       {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
                     </span>
                   </div>
-                  
+
                   {/* Overview */}
                   <div className="mb-6">
                     <h3 className="text-white text-xl font-semibold mb-3">Overview</h3>
                     <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
                   </div>
-                  
+
                   {/* Genres */}
                   {movie.genres && movie.genres.length > 0 && (
                     <div className="mb-6">
@@ -167,7 +167,7 @@ const MoviePage = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {/* Watch Button */}
                   <div className="mb-8">
                     <button 
@@ -180,7 +180,7 @@ const MoviePage = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Cast Section - SECTION 3 */}
             <div className="container mx-auto px-4 mt-12">
               {credits && credits.cast && credits.cast.length > 0 && (
@@ -201,7 +201,7 @@ const MoviePage = () => {
                   </div>
                 </div>
               )}
-              
+
               {/* Similar Movies Section - SECTION 4 */}
               {similarMovies && similarMovies.results && similarMovies.results.length > 0 && (
                 <div className="mb-8">
@@ -221,7 +221,7 @@ const MoviePage = () => {
           </div>
         ) : null}
       </main>
-      
+
       <BackToTop />
       {isVideoOpen && movie && (
         <VideoPlayer 
