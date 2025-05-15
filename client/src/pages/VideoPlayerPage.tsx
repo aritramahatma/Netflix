@@ -95,7 +95,7 @@ const VideoPlayerPage = () => {
                           <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
                           <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
                             <span>{getYearFromDate(similarMovie.release_date)}</span>
-                            <span className="bg-red-900 text-white px-1.5 py-0.5 rounded">
+                            <span className="bg-[#E50914] text-white px-1.5 py-0.5 rounded">
                               {similarMovie.vote_average.toFixed(1)}
                             </span>
                           </div>
