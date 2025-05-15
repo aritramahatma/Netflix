@@ -40,10 +40,23 @@ const MobileMenu = () => {
     const handleToggleMenu = () => toggleMenu();
     document.addEventListener('toggle-mobile-menu', handleToggleMenu);
     
+    // Handle click outside
+    const handleClickOutside = (event: MouseEvent) => {
+      const mobileMenu = document.querySelector('.mobile-menu');
+      if (isOpen && mobileMenu && !mobileMenu.contains(event.target as Node)) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    
     return () => {
       document.removeEventListener('toggle-mobile-menu', handleToggleMenu);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
 
   // Close menu when ESC key is pressed
   useEffect(() => {
@@ -59,7 +72,7 @@ const MobileMenu = () => {
 
   return (
     <div 
-      className={`fixed top-0 left-0 w-64 h-full bg-netflix-dark z-50 transform ${
+      className={`mobile-menu fixed top-0 left-0 w-64 h-full bg-netflix-dark z-50 transform ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       } transition-transform duration-300 ease-in-out shadow-lg`}
     >
