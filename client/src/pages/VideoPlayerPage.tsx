@@ -71,9 +71,10 @@ const VideoPlayerPage = () => {
                 ) : movie?.similar?.results?.length > 0 || movie?.recommendations?.results?.length > 0 ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {(movie?.similar?.results?.length > 0 ? movie.similar.results : movie.recommendations.results).slice(0, 12).map((similarMovie) => (
-                      <div 
+                      <a 
+                        href={`/watch/${similarMovie.id}`}
                         key={similarMovie.id} 
-                        className="bg-netflix-gray/20 rounded-lg overflow-hidden group relative"
+                        className="bg-netflix-gray/20 rounded-lg overflow-hidden group relative block"
                       >
                         <div className="relative aspect-[2/3]">
                           <img
@@ -83,12 +84,9 @@ const VideoPlayerPage = () => {
                             loading="lazy"
                           />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <a 
-                              href={`/watch/${similarMovie.id}`}
-                              className="bg-netflix-red hover:bg-netflix-red/80 text-white rounded-full w-12 h-12 flex items-center justify-center"
-                            >
+                            <span className="bg-netflix-red hover:bg-netflix-red/80 text-white rounded-full w-12 h-12 flex items-center justify-center">
                               <i className="fas fa-play"></i>
-                            </a>
+                            </span>
                           </div>
                         </div>
                         <div className="p-2">
@@ -100,7 +98,7 @@ const VideoPlayerPage = () => {
                             </span>
                           </div>
                         </div>
-                      </div>
+                      </a>
                     ))}
                   </div>
                 ) : (
