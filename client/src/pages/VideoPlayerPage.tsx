@@ -60,27 +60,39 @@ const VideoPlayerPage = () => {
                 {/* Similar Movies Section */}
                 <div className="mt-8">
                   <h2 className="text-xl font-bold text-white mb-4">More Like This</h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {movie.similar?.results?.slice(0, 10).map((similarMovie) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {movie.similar?.results?.slice(0, 8).map((similarMovie) => (
                       <a 
                         href={`/watch/${similarMovie.id}`}
                         key={similarMovie.id} 
-                        className="transition-transform hover:scale-105"
+                        className="bg-netflix-gray/50 rounded-lg overflow-hidden transition-transform hover:scale-105"
                       >
                         <div className="relative group">
                           <img
                             src={getPosterUrl(similarMovie.poster_path)}
                             alt={similarMovie.title}
-                            className="w-full h-48 object-cover rounded-lg mb-2"
+                            className="w-full h-64 object-cover"
                             loading="lazy"
                           />
-                          <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
-                          <div className="flex items-center gap-2 text-sm text-gray-400">
-                            <span>{getYearFromDate(similarMovie.release_date)}</span>
-                            <span>•</span>
-                            <span className="bg-netflix-red px-2 py-0.5 rounded text-white">
-                              {similarMovie.vote_average.toFixed(1)}
-                            </span>
+                          <div className="p-4">
+                            <h3 className="text-white text-lg font-medium truncate">{similarMovie.title}</h3>
+                            <div className="flex items-center gap-2 text-sm text-gray-400 mt-2">
+                              <span>{getYearFromDate(similarMovie.release_date)}</span>
+                              <span>•</span>
+                              <span className="bg-netflix-red px-2 py-0.5 rounded text-white">
+                                {similarMovie.vote_average.toFixed(1)}
+                              </span>
+                            </div>
+                            <p className="text-gray-400 text-sm mt-2 line-clamp-2">
+                              {similarMovie.overview}
+                            </p>
+                            <div className="flex items-center gap-2 mt-2">
+                              {similarMovie.genre_ids?.slice(0, 2).map((genreId) => (
+                                <span key={genreId} className="text-xs bg-netflix-gray px-2 py-1 rounded">
+                                  {movie.genres?.find(g => g.id === genreId)?.name}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </a>
