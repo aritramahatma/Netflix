@@ -103,6 +103,11 @@
   .mobile-menu {
     @apply transition-all duration-300 ease-in-out transform;
   }
+
+  .mobile-menu div[class*="overflow-hidden"] {
+    @apply transition-all duration-300 ease-in-out;
+    will-change: max-height, opacity;
+  }
   
   .back-to-top {
     @apply transition-opacity duration-300;

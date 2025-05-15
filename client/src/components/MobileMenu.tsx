@@ -138,8 +138,8 @@ const MobileMenu = () => {
             </button>
             
             <div className={cn(
-              "pl-4 space-y-3 overflow-hidden transition-all duration-300",
-              showConnect ? "max-h-[500px] mt-3" : "max-h-0"
+              "pl-4 space-y-3 overflow-hidden transition-all duration-300 ease-in-out",
+              showConnect ? "max-h-[500px] mt-3 opacity-100" : "max-h-0 opacity-0"
             )}>
               <a 
                 href="https://t.me/+71hUV_NhjIlkN2U1"
