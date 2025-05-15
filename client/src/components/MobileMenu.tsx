@@ -148,7 +148,7 @@ const MobileMenu = () => {
                 className="block text-white hover:text-netflix-red transition-colors"
                 onClick={closeMenu}
               >
-                Customer Support
+                Request
               </a>
               <a 
                 href="https://t.me/+71hUV_NhjIlkN2U1"
@@ -157,7 +157,7 @@ const MobileMenu = () => {
                 className="block text-white hover:text-netflix-red transition-colors"
                 onClick={closeMenu}
               >
-                Request
+                Customer Support
               </a>
               <a 
                 href="/download"

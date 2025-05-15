@@ -145,7 +145,7 @@ const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Customer Support
+                  Request
                 </a>
                 <a 
                   href="https://t.me/+71hUV_NhjIlkN2U1" 
@@ -153,7 +153,7 @@ const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Request
+                  Customer Support
                 </a>
                 <a 
                   href="/download" 
