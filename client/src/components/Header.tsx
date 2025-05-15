@@ -130,15 +130,13 @@ const Header = () => {
           >
             Telegram
           </a>
-          <div className="relative">
+          <div className="relative group">
             <button 
-              onClick={() => setShowConnectDropdown(!showConnectDropdown)}
               className="text-white hover:text-netflix-red transition"
             >
               Connect
             </button>
-            {showConnectDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-netflix-dark rounded-md shadow-lg py-1 z-50">
+            <div className="absolute left-0 mt-2 w-48 bg-netflix-dark rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <a 
                   href="https://t.me/+71hUV_NhjIlkN2U1" 
                   className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
@@ -168,7 +166,6 @@ const Header = () => {
                   About Us
                 </a>
               </div>
-            )}
           </div>
         </div>
 
