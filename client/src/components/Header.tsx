@@ -129,7 +129,14 @@ const Header = () => {
           >
             Telegram
           </a>
-          <Link href="/premium" className="text-white hover:text-netflix-red transition">Premium</Link>
+          <a 
+            href="https://t.me/+71hUV_NhjIlkN2U1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-netflix-red transition"
+          >
+            Connect
+          </a>
         </div>
 
         {/* Search Bar (Desktop) */}
