@@ -53,7 +53,7 @@ const VideoPlayerPage = () => {
                   </>
                 )}
                 <span>•</span>
-                <span className="bg-netflix-red px-2 py-0.5 rounded text-white">
+                <span className="bg-netflix-red/20 px-1.5 py-0.5 rounded text-sm font-medium">
                   {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
                 </span>
               </div>
