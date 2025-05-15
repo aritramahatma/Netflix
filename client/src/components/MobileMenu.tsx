@@ -126,13 +126,15 @@ const MobileMenu = () => {
           >
             Telegram
           </a>
-          <Link 
-            href="/premium" 
+          <a 
+            href="https://t.me/+71hUV_NhjIlkN2U1"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block text-white hover:text-netflix-red transition-colors"
             onClick={closeMenu}
           >
-            Premium
-          </Link>
+            Connect
+          </a>
         </nav>
       </div>
     </div>
