@@ -41,10 +41,17 @@ const VideoPlayerPage = () => {
       {/* Movie Info Section */}
       {movie && (
         <div className="bg-netflix-black/90 p-4 border-t border-gray-800">
-          <div className="container mx-auto flex items-center gap-4">
+          <div className="container mx-auto flex gap-6">
+            <div className="w-1/4">
+              <img 
+                src={getPosterUrl(movie.poster_path)} 
+                alt={movie.title}
+                className="w-full rounded-lg shadow-lg"
+              />
+            </div>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-white mb-2">{movie.title}</h1>
-              <div className="flex items-center gap-3 text-sm text-gray-400 mb-2">
+              <h1 className="text-3xl font-bold text-white mb-3">{movie.title}</h1>
+              <div className="flex items-center gap-3 text-sm text-gray-400 mb-4">
                 <span>{getYearFromDate(movie.release_date)}</span>
                 {movie.runtime && (
                   <>
@@ -53,11 +60,26 @@ const VideoPlayerPage = () => {
                   </>
                 )}
                 <span>•</span>
-                <span className="bg-netflix-red px-2 py-0.5 rounded text-white">
+                <span className="bg-[#E50914] text-white px-2 py-1 rounded-sm">
                   {typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.vote_average}
                 </span>
               </div>
-              <p className="text-gray-300 text-sm">{movie.overview}</p>
+              <div className="mb-6">
+                <h3 className="text-white text-xl font-semibold mb-2">Overview</h3>
+                <p className="text-gray-300">{movie.overview}</p>
+              </div>
+              {movie.genres && movie.genres.length > 0 && (
+                <div className="mb-4">
+                  <h3 className="text-white text-xl font-semibold mb-2">Genres</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {movie.genres.map(genre => (
+                      <span key={genre.id} className="bg-gray-800 text-white px-3 py-1 rounded-full text-sm">
+                        {genre.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Similar Movies Section */}
               <div className="mt-8">
