@@ -124,6 +124,7 @@ const VideoPlayerPage = () => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

@@ -87,6 +87,7 @@ const GenrePage = () => {
       </main>
       
       <BackToTop />
+      <Footer />
     </div>
   );
 };

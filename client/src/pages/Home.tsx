@@ -141,6 +141,7 @@ const Home = () => {
       </main>
       
       <BackToTop />
+      <Footer />
     </div>
   );
 };

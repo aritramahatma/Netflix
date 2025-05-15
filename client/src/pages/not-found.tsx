@@ -20,6 +20,7 @@ export default function NotFound() {
           Back to Home
         </button>
       </div>
+      <Footer />
     </div>
   );
 }

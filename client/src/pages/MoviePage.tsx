@@ -223,6 +223,7 @@ const MoviePage = () => {
       </main>
 
       <BackToTop />
+      <Footer />
       {isVideoOpen && movie && (
         <VideoPlayer 
           movieId={movie.imdb_id || String(movie.id)} 
