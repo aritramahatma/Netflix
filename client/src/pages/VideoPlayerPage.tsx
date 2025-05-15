@@ -1,13 +1,12 @@
-
 import { useParams } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMovieById } from '@/lib/api';
-import { getBackdropUrl } from '@/lib/tmdb';
+import { getBackdropUrl, getPosterUrl } from '@/lib/tmdb';
 import { getYearFromDate, formatRuntime } from '@/lib/utils';
 
 const VideoPlayerPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
-  
+
   const { data: movie } = useQuery({
     queryKey: [`/api/movies/${movieId}`],
     queryFn: () => fetchMovieById(movieId),
@@ -57,11 +56,42 @@ const VideoPlayerPage = () => {
                   </span>
                 </div>
                 <p className="text-gray-300 text-sm">{movie.overview}</p>
+
+                {/* Similar Movies Section */}
+                <div className="mt-8">
+                  <h2 className="text-xl font-bold text-white mb-4">More Like This</h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {movie.similar?.results?.slice(0, 10).map((similarMovie) => (
+                      <a 
+                        href={`/watch/${similarMovie.id}`}
+                        key={similarMovie.id} 
+                        className="transition-transform hover:scale-105"
+                      >
+                        <div className="relative group">
+                          <img
+                            src={getPosterUrl(similarMovie.poster_path)}
+                            alt={similarMovie.title}
+                            className="w-full h-48 object-cover rounded-lg mb-2"
+                            loading="lazy"
+                          />
+                          <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
+                          <div className="flex items-center gap-2 text-sm text-gray-400">
+                            <span>{getYearFromDate(similarMovie.release_date)}</span>
+                            <span>•</span>
+                            <span className="bg-netflix-red px-2 py-0.5 rounded text-white">
+                              {similarMovie.vote_average.toFixed(1)}
+                            </span>
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          
+
         </>
       )}
     </div>
