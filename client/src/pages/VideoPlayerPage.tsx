@@ -4,6 +4,7 @@ import { fetchMovieById } from '@/lib/api';
 import { getBackdropUrl, getPosterUrl } from '@/lib/tmdb';
 import { getYearFromDate, formatRuntime } from '@/lib/utils';
 import MovieCardSkeleton from '@/components/MovieCardSkeleton';
+import Footer from "@/components/Footer";
 
 const VideoPlayerPage = () => {
   const { movieId } = useParams<{ movieId: string }>();

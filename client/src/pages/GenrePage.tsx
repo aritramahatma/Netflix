@@ -8,6 +8,7 @@ import MobileMenu from '@/components/MobileMenu';
 import BackToTop from '@/components/BackToTop';
 import InfiniteScroll from '@/components/InfiniteScroll';
 import { fetchMoviesByGenre, fetchGenres } from '@/lib/api';
+import Footer from "@/components/Footer";
 
 const GenrePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -54,7 +55,7 @@ const GenrePage = () => {
     <div className="min-h-screen bg-netflix-black">
       <Header />
       <MobileMenu />
-      
+
       <main className="container mx-auto px-4 pt-24 pb-16">
         {isLoadingGenres ? (
           <div className="py-10">
@@ -76,7 +77,7 @@ const GenrePage = () => {
                 Explore our collection of {currentGenre ? currentGenre.name.toLowerCase() : ''} movies
               </p>
             </div>
-            
+
             <InfiniteScroll 
               queryKey={['/api/movies/genre', id]}
               fetchFn={(page) => fetch(`/api/movies/genre/${id}?page=${page}`).then(res => res.json())}
@@ -85,7 +86,7 @@ const GenrePage = () => {
           </>
         )}
       </main>
-      
+
       <BackToTop />
       <Footer />
     </div>

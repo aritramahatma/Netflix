@@ -1,4 +1,6 @@
 import { useLocation } from 'wouter';
+import React from "react";
+import Footer from "@/components/Footer";
 
 export default function NotFound() {
   const [, navigate] = useLocation();

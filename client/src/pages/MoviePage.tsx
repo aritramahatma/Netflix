@@ -11,6 +11,7 @@ import { fetchMovieById, fetchMovieCredits, fetchSimilarMovies, addToWatchHistor
 import { getPosterUrl, getBackdropUrl, getProfileUrl, formatRuntime, getYearFromDate } from '@/lib/tmdb';
 import MovieCard from '@/components/MovieCard';
 import { useToast } from '@/hooks/use-toast';
+import Footer from "@/components/Footer";
 
 const MoviePage = () => {
   const { id } = useParams<{ id: string }>();
