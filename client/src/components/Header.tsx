@@ -139,7 +139,7 @@ const Header = () => {
             <div className="absolute left-0 mt-2 w-48 bg-netflix-dark rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <a 
                   href="https://t.me/+71hUV_NhjIlkN2U1" 
-                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                  className="block px-4 py-2 text-sm text-white hover:text-[#E50914] transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -147,7 +147,7 @@ const Header = () => {
                 </a>
                 <a 
                   href="https://t.me/+71hUV_NhjIlkN2U1" 
-                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                  className="block px-4 py-2 text-sm text-white hover:text-[#E50914] transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -155,13 +155,13 @@ const Header = () => {
                 </a>
                 <a 
                   href="/download" 
-                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                  className="block px-4 py-2 text-sm text-white hover:text-[#E50914] transition-colors"
                 >
                   How to Download
                 </a>
                 <a 
                   href="/about" 
-                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                  className="block px-4 py-2 text-sm text-white hover:text-[#E50914] transition-colors"
                 >
                   About Us
                 </a>
