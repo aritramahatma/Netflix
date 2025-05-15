@@ -67,9 +67,9 @@ const VideoPlayerPage = () => {
                         <MovieCardSkeleton key={i} />
                       ))}
                     </div>
-                  ) : movie?.similar?.results?.length > 0 ? (
+                  ) : movie?.similar?.results?.length > 0 || movie?.recommendations?.results?.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                      {movie.similar.results.slice(0, 8).map((similarMovie) => (
+                      {(movie?.similar?.results?.length > 0 ? movie.similar.results : movie.recommendations.results).slice(0, 8).map((similarMovie) => (
                       <a 
                         href={`/watch/${similarMovie.id}`}
                         key={similarMovie.id} 
