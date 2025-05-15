@@ -13,6 +13,7 @@ const MobileMenu = () => {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [showGenres, setShowGenres] = useState(false);
+  const [showConnect, setShowConnect] = useState(false);
 
   const { data: genres = [] as Genre[] } = useQuery<Genre[]>({
     queryKey: ['/api/genres'],
@@ -126,15 +127,54 @@ const MobileMenu = () => {
           >
             Telegram
           </a>
-          <a 
-            href="https://t.me/+71hUV_NhjIlkN2U1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-white hover:text-netflix-red transition-colors"
-            onClick={closeMenu}
-          >
-            Connect
-          </a>
+          {/* Connect Navigation */}
+          <div>
+            <button
+              className="w-full flex items-center justify-between text-white hover:text-netflix-red transition-colors"
+              onClick={() => setShowConnect(!showConnect)}
+            >
+              <span>Connect</span>
+              <i className={`fas fa-chevron-${showConnect ? 'up' : 'down'} text-sm`}></i>
+            </button>
+            
+            <div className={cn(
+              "pl-4 space-y-3 overflow-hidden transition-all duration-300",
+              showConnect ? "max-h-[500px] mt-3" : "max-h-0"
+            )}>
+              <a 
+                href="https://t.me/+71hUV_NhjIlkN2U1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-white hover:text-netflix-red transition-colors"
+                onClick={closeMenu}
+              >
+                Customer Support
+              </a>
+              <a 
+                href="https://t.me/+71hUV_NhjIlkN2U1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-white hover:text-netflix-red transition-colors"
+                onClick={closeMenu}
+              >
+                Request
+              </a>
+              <a 
+                href="/download"
+                className="block text-white hover:text-netflix-red transition-colors"
+                onClick={closeMenu}
+              >
+                How to Download
+              </a>
+              <a 
+                href="/about"
+                className="block text-white hover:text-netflix-red transition-colors"
+                onClick={closeMenu}
+              >
+                About Us
+              </a>
+            </div>
+          </div>
         </nav>
       </div>
     </div>

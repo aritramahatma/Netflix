@@ -11,6 +11,7 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [showConnectDropdown, setShowConnectDropdown] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data: searchResults, isLoading: isSearching } = useQuery({
@@ -129,14 +130,46 @@ const Header = () => {
           >
             Telegram
           </a>
-          <a 
-            href="https://t.me/+71hUV_NhjIlkN2U1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white hover:text-netflix-red transition"
-          >
-            Connect
-          </a>
+          <div className="relative">
+            <button 
+              onClick={() => setShowConnectDropdown(!showConnectDropdown)}
+              className="text-white hover:text-netflix-red transition"
+            >
+              Connect
+            </button>
+            {showConnectDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-netflix-dark rounded-md shadow-lg py-1 z-50">
+                <a 
+                  href="https://t.me/+71hUV_NhjIlkN2U1" 
+                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Customer Support
+                </a>
+                <a 
+                  href="https://t.me/+71hUV_NhjIlkN2U1" 
+                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Request
+                </a>
+                <a 
+                  href="/download" 
+                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                >
+                  How to Download
+                </a>
+                <a 
+                  href="/about" 
+                  className="block px-4 py-2 text-sm text-white hover:bg-netflix-red/20"
+                >
+                  About Us
+                </a>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Search Bar (Desktop) */}
