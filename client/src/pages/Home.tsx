@@ -68,7 +68,7 @@ const Home = () => {
       <Header />
       <MobileMenu />
 
-      <main className="container mx-auto px-4 pt-16 pb-8">
+      <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Hero Section */}
         {isLoading ? (
           <div className="relative rounded-lg overflow-hidden" style={{ height: '50vh', minHeight: '400px' }}>
