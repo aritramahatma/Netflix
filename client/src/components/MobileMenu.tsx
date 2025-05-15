@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
@@ -39,7 +38,7 @@ const MobileMenu = () => {
   useEffect(() => {
     const handleToggleMenu = () => toggleMenu();
     document.addEventListener('toggle-mobile-menu', handleToggleMenu);
-    
+
     // Handle click outside
     const handleClickOutside = (event: MouseEvent) => {
       const mobileMenu = document.querySelector('.mobile-menu');
@@ -50,7 +49,7 @@ const MobileMenu = () => {
 
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('touchstart', handleClickOutside);
-    
+
     return () => {
       document.removeEventListener('toggle-mobile-menu', handleToggleMenu);
       document.removeEventListener('mousedown', handleClickOutside);
@@ -65,7 +64,7 @@ const MobileMenu = () => {
         closeMenu();
       }
     };
-    
+
     window.addEventListener('keydown', handleEscKey);
     return () => window.removeEventListener('keydown', handleEscKey);
   }, []);
@@ -104,7 +103,7 @@ const MobileMenu = () => {
           >
             Home
           </a>
-          
+
           {/* Genres Navigation */}
           <div>
             <button
@@ -114,7 +113,7 @@ const MobileMenu = () => {
               <span>Genres</span>
               <i className={`fas fa-chevron-${showGenres ? 'up' : 'down'} text-sm`}></i>
             </button>
-            
+
             <div className={cn(
               "pl-4 space-y-3 overflow-hidden transition-all duration-300",
               showGenres ? "max-h-[500px] mt-3" : "max-h-0"
@@ -130,7 +129,7 @@ const MobileMenu = () => {
               ))}
             </div>
           </div>
-          
+
           <a 
             href="https://t.me/movies404update"
             target="_blank"
@@ -149,9 +148,9 @@ const MobileMenu = () => {
               <span>Connect</span>
               <i className={`fas fa-chevron-${showConnect ? 'up' : 'down'} text-sm`}></i>
             </button>
-            
+
             <div className={cn(
-              "pl-4 space-y-3 overflow-hidden transition-all duration-300 ease-in-out",
+              "pl-4 space-y-3 overflow-hidden transition-all duration-200 ease-in-out will-change-transform",
               showConnect ? "max-h-[500px] mt-3 opacity-100" : "max-h-0 opacity-0"
             )}>
               <a 
