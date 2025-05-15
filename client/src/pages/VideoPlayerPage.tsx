@@ -41,14 +41,7 @@ const VideoPlayerPage = () => {
       {/* Movie Info Section */}
       {movie && (
         <div className="bg-netflix-black/90 p-4 border-t border-gray-800">
-          <div className="container mx-auto flex gap-6">
-            <div className="w-1/4">
-              <img 
-                src={getPosterUrl(movie.poster_path)} 
-                alt={movie.title}
-                className="w-full rounded-lg shadow-lg"
-              />
-            </div>
+          <div className="container mx-auto">
             <div className="flex-1">
               <h1 className="text-3xl font-bold text-white mb-3">{movie.title}</h1>
               <div className="flex items-center gap-3 text-sm text-gray-400 mb-4">
