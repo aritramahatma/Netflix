@@ -7,9 +7,10 @@ import { getYearFromDate, formatRuntime } from '@/lib/utils';
 const VideoPlayerPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
 
-  const { data: movie } = useQuery({
+  const { data: movie, isLoading } = useQuery({
     queryKey: [`/api/movies/${movieId}`],
     queryFn: () => fetchMovieById(movieId),
+    staleTime: 0, // Disable caching
   });
 
   return (
@@ -60,8 +61,15 @@ const VideoPlayerPage = () => {
                 {/* Similar Movies Section */}
                 <div className="mt-8">
                   <h2 className="text-xl font-bold text-white mb-4">More Like This</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {movie.similar?.results?.slice(0, 8).map((similarMovie) => (
+                  {isLoading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                      {[...Array(4)].map((_, i) => (
+                        <MovieCardSkeleton key={i} />
+                      ))}
+                    </div>
+                  ) : movie?.similar?.results?.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                      {movie.similar.results.slice(0, 8).map((similarMovie) => (
                       <a 
                         href={`/watch/${similarMovie.id}`}
                         key={similarMovie.id} 
@@ -97,7 +105,10 @@ const VideoPlayerPage = () => {
                         </div>
                       </a>
                     ))}
-                  </div>
+                    </div>
+                  ) : (
+                    <p className="text-gray-400">No similar movies found</p>
+                  )}
                 </div>
               </div>
             </div>
