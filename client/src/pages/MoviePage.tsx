@@ -79,7 +79,7 @@ const MoviePage = () => {
       <Header />
       <MobileMenu />
 
-      <main className="pt-16 pb-16">
+      <main className="pt-12 pb-8">
         {isLoading ? (
           <div style={{ minHeight: 'calc(100vh - 200px)' }}>
             <div className="w-full h-[350px] mb-8">
