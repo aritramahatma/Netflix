@@ -38,10 +38,59 @@ const VideoPlayerPage = () => {
         <span className="text-gray-400">Advertisement</span>
       </div>
 
-      {/* Movie Info Section */}
+      {/* Similar Movies Section */}
       {movie && (
         <div className="bg-netflix-black/90 p-4 border-t border-gray-800">
-          <div className="container mx-auto flex items-center gap-4">
+          <div className="container mx-auto">
+            <h2 className="text-xl font-bold text-white mb-4">Similar Movies</h2>
+            {isLoading ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {[...Array(6)].map((_, i) => (
+                  <MovieCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : movie?.similar?.results?.length > 0 || movie?.recommendations?.results?.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {(movie?.similar?.results?.length > 0 ? movie.similar.results : movie.recommendations.results).slice(0, 12).map((similarMovie) => (
+                  <div 
+                    key={similarMovie.id} 
+                    className="bg-netflix-gray/20 rounded-lg overflow-hidden group relative"
+                  >
+                    <div className="relative aspect-[2/3]">
+                      <img
+                        src={getPosterUrl(similarMovie.poster_path)}
+                        alt={similarMovie.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <a 
+                          href={`/watch/${similarMovie.id}`}
+                          className="bg-netflix-red hover:bg-netflix-red/80 text-white rounded-full w-12 h-12 flex items-center justify-center"
+                        >
+                          <i className="fas fa-play"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="p-2">
+                      <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
+                      <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
+                        <span>{getYearFromDate(similarMovie.release_date)}</span>
+                        <span className="bg-netflix-red/20 px-1.5 py-0.5 rounded">
+                          {similarMovie.vote_average.toFixed(1)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-400">No similar movies found</p>
+            )}
+          </div>
+
+          {/* Movie Info Section */}
+          <div className="container mx-auto flex items-center gap-4 mt-8">
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-white mb-2">{movie.title}</h1>
               <div className="flex items-center gap-3 text-sm text-gray-400 mb-2">
@@ -58,9 +107,8 @@ const VideoPlayerPage = () => {
                 </span>
               </div>
               <p className="text-gray-300 text-sm">{movie.overview}</p>
-
-              {/* Similar Movies Section */}
-              <div className="mt-8">
+            </div>
+          </div>
                 <h2 className="text-xl font-bold text-white mb-4">Similar Movies</h2>
                 {isLoading ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
