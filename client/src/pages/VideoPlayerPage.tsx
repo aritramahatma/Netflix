@@ -60,21 +60,46 @@ const VideoPlayerPage = () => {
 
                 {/* Similar Movies Section */}
                 <div className="mt-8">
-                  <h2 className="text-xl font-bold text-white mb-4">More Like This</h2>
+                  <h2 className="text-xl font-bold text-white mb-4">Similar Movies</h2>
                   {isLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                      {[...Array(4)].map((_, i) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                      {[...Array(6)].map((_, i) => (
                         <MovieCardSkeleton key={i} />
                       ))}
                     </div>
                   ) : movie?.similar?.results?.length > 0 || movie?.recommendations?.results?.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                      {(movie?.similar?.results?.length > 0 ? movie.similar.results : movie.recommendations.results).slice(0, 8).map((similarMovie) => (
-                      <a 
-                        href={`/watch/${similarMovie.id}`}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                      {(movie?.similar?.results?.length > 0 ? movie.similar.results : movie.recommendations.results).slice(0, 12).map((similarMovie) => (
+                      <div 
                         key={similarMovie.id} 
-                        className="bg-netflix-gray/50 rounded-lg overflow-hidden transition-transform hover:scale-105"
+                        className="bg-netflix-gray/20 rounded-lg overflow-hidden group relative"
                       >
+                        <div className="relative aspect-[2/3]">
+                          <img
+                            src={getPosterUrl(similarMovie.poster_path)}
+                            alt={similarMovie.title}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <a 
+                              href={`/watch/${similarMovie.id}`}
+                              className="bg-netflix-red hover:bg-netflix-red/80 text-white rounded-full w-12 h-12 flex items-center justify-center"
+                            >
+                              <i className="fas fa-play"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <div className="p-2">
+                          <h3 className="text-white text-sm font-medium truncate">{similarMovie.title}</h3>
+                          <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
+                            <span>{getYearFromDate(similarMovie.release_date)}</span>
+                            <span className="bg-netflix-red/20 px-1.5 py-0.5 rounded">
+                              {similarMovie.vote_average.toFixed(1)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                         <div className="relative group">
                           <img
                             src={getPosterUrl(similarMovie.poster_path)}
