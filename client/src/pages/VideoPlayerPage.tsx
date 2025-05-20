@@ -28,8 +28,9 @@ const VideoPlayerPage = () => {
           src={`https://vidsrc.to/embed/movie/${movieId}`}
           className="absolute top-0 left-0 w-full h-full"
           allowFullScreen
-          allow="autoplay; fullscreen"
-          allow="autoplay; fullscreen"
+          allow="autoplay *; fullscreen *"
+          referrerPolicy="no-referrer"
+          loading="lazy"
           onError={() => window.open(`https://vidsrc.to/embed/movie/${movieId}`, '_blank')}
         />
       </div>
