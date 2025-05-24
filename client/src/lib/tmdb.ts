@@ -28,7 +28,7 @@ export const PROFILE_SIZES = {
 
 // Build image URLs
 export const getPosterUrl = (path: string | null, size = POSTER_SIZES.lg) => {
-  if (!path) return 'https://i.ibb.co/8X7hTpN/404-movie-poster-default.jpg';
+  if (!path) return '/attached_assets/20250524_2103_Minimalist Movie Poster_simple_compose_01jw1ests4ezbv62j9s1eb7y3b.png';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
@@ -46,11 +46,11 @@ export const getProfileUrl = (path: string | null, size = PROFILE_SIZES.sm) => {
 export const formatRuntime = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-  
+
   if (hours === 0) {
     return `${remainingMinutes} min`;
   }
-  
+
   return `${hours}h ${remainingMinutes}m`;
 };
 
