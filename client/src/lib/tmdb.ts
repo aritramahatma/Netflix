@@ -28,7 +28,7 @@ export const PROFILE_SIZES = {
 
 // Build image URLs
 export const getPosterUrl = (path: string | null, size = POSTER_SIZES.lg) => {
-  if (!path) return '../../../attached_assets/20250524_2103_Minimalist Movie Poster_simple_compose_01jw1ests4ezbv62j9s1eb7y3b.png';
+  if (!path) return '/default-poster.png';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
