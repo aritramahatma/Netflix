@@ -28,7 +28,7 @@ export const PROFILE_SIZES = {
 
 // Build image URLs
 export const getPosterUrl = (path: string | null, size = POSTER_SIZES.lg) => {
-  if (!path) return '/clapper-board-dark.jpg';
+  if (!path) return 'https://i.postimg.cc/J4r3v6bf/20250524-2103-Minimalist-Movie-Poster-simple-compose-01jw1ests4ezbv62j9s1eb7y3b.png';
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 };
 
