@@ -8,7 +8,6 @@ import {
   getStreamingUrl
 } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import { useLocation } from 'wouter';
 
 interface FilterParams {
   recentOnly?: boolean;
@@ -31,7 +30,6 @@ const MovieGrid = ({
   filterParams = {} 
 }: MovieGridProps) => {
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
   const { recentOnly, minRating } = filterParams;
 
   // Create query key based on type and filters
@@ -98,12 +96,9 @@ const MovieGrid = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-white text-2xl font-bold">{title}</h2>
         {viewAllLink && (
-          <button 
-            onClick={() => setLocation(viewAllLink)}
-            className="text-gray-400 hover:text-netflix-red text-sm transition cursor-pointer"
-          >
+          <a href={viewAllLink} className="text-gray-400 hover:text-netflix-red text-sm transition">
             View All
-          </button>
+          </a>
         )}
       </div>
 
