@@ -1,6 +1,6 @@
 import MovieCard from './MovieCard';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   fetchTrendingMovies, 
   fetchPopularMovies, 
@@ -34,7 +34,7 @@ const MovieGrid = ({
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const { recentOnly, minRating } = filterParams;
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(true); // Start with showing all movies
   const [allMovies, setAllMovies] = useState<any[]>([]);
 
   // Create query key based on type and filters
@@ -110,6 +110,44 @@ const MovieGrid = ({
     queryFn: fetchData
   });
 
+  // Auto-fetch all movies for discover type on component mount
+  const { data: allDiscoverData, isLoading: isLoadingAll } = useQuery({
+    queryKey: ['discover-all', type],
+    queryFn: async () => {
+      if (type !== 'discover') return null;
+      
+      const promises = [];
+      // Fetch up to 25 pages to get ~500 movies (each page has ~20 movies)
+      for (let page = 1; page <= 25; page++) {
+        promises.push(fetchAllMovies(page));
+      }
+      
+      const results = await Promise.all(promises);
+      const combinedMovies: any[] = [];
+      
+      results.forEach(result => {
+        if (result?.results) {
+          combinedMovies.push(...result.results);
+        }
+      });
+      
+      // Remove duplicates and limit to 500
+      const uniqueMovies = combinedMovies.filter((movie, index, self) => 
+        index === self.findIndex(m => m.id === movie.id)
+      ).slice(0, 500);
+      
+      return uniqueMovies;
+    },
+    enabled: type === 'discover'
+  });
+
+  // Set all movies when data is loaded
+  useEffect(() => {
+    if (allDiscoverData && type === 'discover') {
+      setAllMovies(allDiscoverData);
+    }
+  }, [allDiscoverData]);
+
   // Extract movies array from data safely
   const movies = movieData?.results || [];
 
@@ -142,10 +180,8 @@ const MovieGrid = ({
               if (type === 'discover') {
                 if (showAll) {
                   setShowAll(false);
-                  setAllMovies([]);
                 } else {
                   setShowAll(true);
-                  await fetchAllDiscoverMovies();
                 }
               } else if (type === 'trending') {
                 setLocation('/trending');
@@ -162,7 +198,7 @@ const MovieGrid = ({
         )}
       </div>
 
-      {isLoading && (
+      {(isLoading || (type === 'discover' && isLoadingAll)) && (
         <div className="flex justify-center py-10">
           <div className="w-10 h-10 border-4 border-netflix-red border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -178,7 +214,16 @@ const MovieGrid = ({
 
       {movies && movies.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {(type === 'discover' && showAll && allMovies.length > 0 ? allMovies : movies).map((movie: any, index: number) => (
+          {(() => {
+            if (type === 'discover') {
+              if (showAll && allMovies.length > 0) {
+                return allMovies;
+              } else {
+                return movies.slice(0, 20);
+              }
+            }
+            return movies;
+          })().map((movie: any, index: number) => (
             <MovieCard 
               key={`${movie.id}-${index}`} 
               movie={movie} 
