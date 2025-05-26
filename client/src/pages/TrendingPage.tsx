@@ -139,7 +139,11 @@ const TrendingPage = () => {
         {(allMovies.length >= 100 || !hasMore) && allMovies.length > 0 && (
           <div className="text-center mt-8">
             <p className="text-gray-400">
-              {allMovies.length >= 100 ? "Showing top 100 trending movies" : "You've reached the end!"}
+              {allMovies.length >= 100 ? (
+                <>Showing top <span style={{ color: '#E50914' }}>100</span> trending movies</>
+              ) : (
+                "You've reached the end!"
+              )}
             </p>
           </div>
         )}
