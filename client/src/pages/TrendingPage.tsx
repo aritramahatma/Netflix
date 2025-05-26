@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import MobileMenu from '@/components/MobileMenu';
