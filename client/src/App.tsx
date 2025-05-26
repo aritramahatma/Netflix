@@ -11,12 +11,14 @@ const MoviePage = lazy(() => import("@/pages/MoviePage"));
 import VideoPlayerPage from './pages/VideoPlayerPage';
 const GenrePage = lazy(() => import("@/pages/GenrePage"));
 const NotFound = lazy(() => import("@/pages/not-found"));
+const TrendingPage = lazy(() => import("@/pages/TrendingPage"));
 
 function Router() {
   return (
     <Suspense fallback={<div className="h-screen w-screen bg-netflix-black"></div>}>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/trending" component={TrendingPage} />
         <Route path="/movie/:id" component={MoviePage} />
         <Route path="/watch/:movieId" component={VideoPlayerPage} />
         <Route path="/genre/:id" component={GenrePage} />
