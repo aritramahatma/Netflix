@@ -102,6 +102,8 @@ const MovieGrid = ({
             onClick={() => {
               if (type === 'trending') {
                 setLocation('/trending');
+              } else if (type === 'popular') {
+                setLocation('/popular');
               } else {
                 setLocation(viewAllLink);
               }
@@ -129,9 +131,9 @@ const MovieGrid = ({
 
       {movies && movies.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.map((movie: any) => (
+          {movies.map((movie: any, index: number) => (
             <MovieCard 
-              key={movie.id} 
+              key={`${movie.id}-${index}`} 
               movie={movie} 
               onWatchClick={handleWatchClick} 
             />
