@@ -118,9 +118,9 @@ const TrendingPage = () => {
 
         {allMovies.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {allMovies.slice(0, 100).map((movie: any) => (
+            {allMovies.slice(0, 100).map((movie: any, index: number) => (
               <MovieCard 
-                key={movie.id} 
+                key={`${movie.id}-${index}`} 
                 movie={movie} 
                 onWatchClick={handleWatchClick} 
               />
@@ -140,7 +140,7 @@ const TrendingPage = () => {
           <div className="text-center mt-8">
             <p className="text-gray-400">
               {allMovies.length >= 100 ? (
-                <>Showing top <span style={{ color: '#E50914' }}>100</span> trending movies</>
+                <>Showing top <span style={{ color: '#E50914', fontWeight: 'bold' }}>100</span> trending movies</>
               ) : (
                 "You've reached the end!"
               )}
