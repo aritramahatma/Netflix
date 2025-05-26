@@ -102,6 +102,8 @@ const MovieGrid = ({
             onClick={() => {
               if (type === 'trending') {
                 setLocation('/trending');
+              } else if (type === 'popular') {
+                setLocation('/popular');
               } else {
                 setLocation(viewAllLink);
               }
