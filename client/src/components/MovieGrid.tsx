@@ -1,5 +1,6 @@
 import MovieCard from './MovieCard';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { 
   fetchTrendingMovies, 
   fetchPopularMovies, 
@@ -33,6 +34,8 @@ const MovieGrid = ({
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const { recentOnly, minRating } = filterParams;
+  const [showAll, setShowAll] = useState(false);
+  const [allMovies, setAllMovies] = useState<any[]>([]);
 
   // Create query key based on type and filters
   let queryKey: any[] = [];
@@ -63,6 +66,41 @@ const MovieGrid = ({
     } catch (error) {
       console.error("Error fetching movies:", error);
       throw error;
+    }
+  };
+
+  // Fetch additional pages for discover type when showing all
+  const fetchAllDiscoverMovies = async () => {
+    if (type !== 'discover') return;
+    
+    try {
+      const promises = [];
+      for (let page = 1; page <= 5; page++) {
+        promises.push(fetchAllMovies(page));
+      }
+      
+      const results = await Promise.all(promises);
+      const combinedMovies: any[] = [];
+      
+      results.forEach(result => {
+        if (result?.results) {
+          combinedMovies.push(...result.results);
+        }
+      });
+      
+      // Remove duplicates and limit to 100
+      const uniqueMovies = combinedMovies.filter((movie, index, self) => 
+        index === self.findIndex(m => m.id === movie.id)
+      ).slice(0, 100);
+      
+      setAllMovies(uniqueMovies);
+    } catch (error) {
+      console.error("Error fetching all discover movies:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load additional movies.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -99,8 +137,16 @@ const MovieGrid = ({
         <h2 className="text-white text-2xl font-bold">{title}</h2>
         {viewAllLink && (
           <button 
-            onClick={() => {
-              if (type === 'trending') {
+            onClick={async () => {
+              if (type === 'discover') {
+                if (showAll) {
+                  setShowAll(false);
+                  setAllMovies([]);
+                } else {
+                  setShowAll(true);
+                  await fetchAllDiscoverMovies();
+                }
+              } else if (type === 'trending') {
                 setLocation('/trending');
               } else if (type === 'popular') {
                 setLocation('/popular');
@@ -110,7 +156,7 @@ const MovieGrid = ({
             }}
             className="text-gray-400 hover:text-netflix-red text-sm transition cursor-pointer"
           >
-            {type === 'discover' ? 'Show All' : 'View All'}
+            {type === 'discover' ? (showAll ? 'Show Less' : 'Show All') : 'View All'}
           </button>
         )}
       </div>
@@ -131,7 +177,7 @@ const MovieGrid = ({
 
       {movies && movies.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.map((movie: any, index: number) => (
+          {(type === 'discover' && showAll && allMovies.length > 0 ? allMovies : movies).map((movie: any, index: number) => (
             <MovieCard 
               key={`${movie.id}-${index}`} 
               movie={movie} 
