@@ -110,7 +110,7 @@ const MovieGrid = ({
             }}
             className="text-gray-400 hover:text-netflix-red text-sm transition cursor-pointer"
           >
-            View All
+            Show All
           </button>
         )}
       </div>
