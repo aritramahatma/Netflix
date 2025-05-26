@@ -75,7 +75,8 @@ const MovieGrid = ({
     
     try {
       const promises = [];
-      for (let page = 1; page <= 5; page++) {
+      // Fetch up to 25 pages to get ~500 movies (each page has ~20 movies)
+      for (let page = 1; page <= 25; page++) {
         promises.push(fetchAllMovies(page));
       }
       
@@ -88,10 +89,10 @@ const MovieGrid = ({
         }
       });
       
-      // Remove duplicates and limit to 100
+      // Remove duplicates and limit to 500
       const uniqueMovies = combinedMovies.filter((movie, index, self) => 
         index === self.findIndex(m => m.id === movie.id)
-      ).slice(0, 100);
+      ).slice(0, 500);
       
       setAllMovies(uniqueMovies);
     } catch (error) {
