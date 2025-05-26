@@ -11,7 +11,9 @@ const MoviePage = lazy(() => import("@/pages/MoviePage"));
 import VideoPlayerPage from './pages/VideoPlayerPage';
 const GenrePage = lazy(() => import("@/pages/GenrePage"));
 const NotFound = lazy(() => import("@/pages/not-found"));
-const TrendingPage = lazy(() => import("@/pages/TrendingPage"));
+import TrendingPage from '@/pages/TrendingPage';
+import PopularPage from '@/pages/PopularPage';
+const GenrePage = lazy(() => import("@/pages/GenrePage"));
 
 function Router() {
   return (
@@ -19,6 +21,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/trending" component={TrendingPage} />
+        <Route path="/popular" component={PopularPage} />
         <Route path="/movie/:id" component={MoviePage} />
         <Route path="/watch/:movieId" component={VideoPlayerPage} />
         <Route path="/genre/:id" component={GenrePage} />
